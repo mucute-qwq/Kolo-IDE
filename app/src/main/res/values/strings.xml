@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name" translatable="false">Kolo IDE</string>
+    <string name="home">Home</string>
+    <string name="extension">Extension</string>
+    <string name="document">Document</string>
+    <string name="setting">Setting</string>
+    <string name="project_type">%s Project</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
+</resources>
