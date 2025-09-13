@@ -7,4 +7,5 @@
     <string name="project_type">%s Project</string>
     <string name="rename">Rename</string>
     <string name="delete">Delete</string>
+    <string name="new_project">New Project</string>
 </resources>

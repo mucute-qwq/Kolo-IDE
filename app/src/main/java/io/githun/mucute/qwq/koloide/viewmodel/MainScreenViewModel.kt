@@ -2,13 +2,17 @@ package io.githun.mucute.qwq.koloide.viewmodel
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Book
+import androidx.compose.material.icons.twotone.Delete
+import androidx.compose.material.icons.twotone.Edit
 import androidx.compose.material.icons.twotone.Extension
 import androidx.compose.material.icons.twotone.Home
 import androidx.compose.material.icons.twotone.Settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.githun.mucute.qwq.koloide.R
+import io.githun.mucute.qwq.koloide.component.SelectableCardDropDownMenu
 import io.githun.mucute.qwq.koloide.model.NavItem
+import io.githun.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem
 import io.githun.mucute.qwq.koloide.page.main.DocumentPage
 import io.githun.mucute.qwq.koloide.page.main.ExtensionPage
 import io.githun.mucute.qwq.koloide.page.main.HomePage
@@ -40,6 +44,24 @@ class MainScreenViewModel : ViewModel() {
             icon = Icons.TwoTone.Settings,
             labelResId = R.string.setting,
             content = { SettingPage() }
+        )
+    )
+
+    val projectCardDropDownMenuItems = listOf(
+        SelectableCardDropDownMenuItem(
+            leadingIcon = Icons.TwoTone.Edit,
+            textResId = R.string.rename
+        ),
+        SelectableCardDropDownMenuItem(
+            leadingIcon = Icons.TwoTone.Delete,
+            textResId = R.string.delete
+        ),
+    )
+
+    val extensionCardDropDownMenuItems = listOf(
+        SelectableCardDropDownMenuItem(
+            leadingIcon = Icons.TwoTone.Delete,
+            textResId = R.string.delete
         )
     )
 
