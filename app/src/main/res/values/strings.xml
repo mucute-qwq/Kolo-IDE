@@ -8,4 +8,19 @@
     <string name="rename">Rename</string>
     <string name="delete">Delete</string>
     <string name="new_project">New Project</string>
+    <string name="configuration">Configuration</string>
+    <string name="general">General</string>
+    <string name="general_summary">General IDE configurations</string>
+    <string name="editor">Editor</string>
+    <string name="editor_summary">Editor configuration</string>
+    <string name="build_and_run">Build &amp; Run</string>
+    <string name="build_and_run_summary">Building and running configuration</string>
+    <string name="developer_options">Developer Options</string>
+    <string name="developer_options_summary">Experimental features and debugging features</string>
+    <string name="about">About</string>
+    <string name="about_summary">More about Kolo IDE</string>
+    <string name="extensions_management_summary">Modifying extension options</string>
+    <string name="extensions_management">Extensions Management</string>
+    <string name="theme">Theme</string>
+    <string name="theme_summary">IDE theme configuration</string>
 </resources>

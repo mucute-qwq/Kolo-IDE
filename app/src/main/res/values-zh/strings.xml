@@ -8,4 +8,19 @@
     <string name="rename">重命名</string>
     <string name="delete">删除</string>
     <string name="new_project">新建项目</string>
+    <string name="configuration">配置</string>
+    <string name="general">常规</string>
+    <string name="general_summary">常规 IDE 配置</string>
+    <string name="editor">编辑器</string>
+    <string name="editor_summary">编辑器配置</string>
+    <string name="build_and_run">构建和运行</string>
+    <string name="build_and_run_summary">构建和运行配置</string>
+    <string name="developer_options">开发者选项</string>
+    <string name="developer_options_summary">实验性功能和调试功能</string>
+    <string name="about">关于</string>
+    <string name="about_summary">关于 Kolo IDE 的更多信息</string>
+    <string name="extensions_management_summary">修改扩展的可选项</string>
+    <string name="extensions_management">扩展管理</string>
+    <string name="theme">主题</string>
+    <string name="theme_summary">IDE 主题配置</string>
 </resources>

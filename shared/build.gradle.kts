@@ -18,6 +18,7 @@ android {
 }
 
 dependencies {
+    api(libs.compose.preference)
     api(libs.androidx.core.ktx)
     api(libs.androidx.lifecycle.runtime.ktx)
     api(libs.androidx.activity.compose)

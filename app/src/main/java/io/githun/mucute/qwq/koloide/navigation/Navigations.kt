@@ -10,24 +10,27 @@ import androidx.navigation.compose.rememberNavController
 import io.githun.mucute.qwq.koloide.screen.MainScreen
 import io.githun.mucute.qwq.koloide.screen.NewProjectScreen
 import kotlinx.serialization.Serializable
+import me.zhanghai.compose.preference.ProvidePreferenceLocals
 
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
     CompositionLocalProvider(LocalNavController provides navController) {
-        NavHost(
-            navController = navController,
-            startDestination = NavScreen.Main
-        ) {
+        ProvidePreferenceLocals {
+            NavHost(
+                navController = navController,
+                startDestination = NavScreen.Main
+            ) {
 
-            composable<NavScreen.Main>() {
-                MainScreen()
+                composable<NavScreen.Main>() {
+                    MainScreen()
+                }
+
+                composable<NavScreen.NewProject> {
+                    NewProjectScreen()
+                }
+
             }
-
-            composable<NavScreen.NewProject> {
-                NewProjectScreen()
-            }
-
         }
     }
 }
