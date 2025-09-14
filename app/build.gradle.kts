@@ -48,5 +48,6 @@ android {
 }
 
 dependencies {
+    implementation(project(":extension"))
     implementation(project(":shared"))
 }

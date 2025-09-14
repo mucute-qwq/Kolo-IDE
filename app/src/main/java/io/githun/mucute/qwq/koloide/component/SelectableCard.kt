@@ -47,7 +47,7 @@ fun SelectableCard(
     Box(
         modifier
             .fillMaxWidth()
-            .clip(MaterialTheme.shapes.medium)
+            .clip(MaterialTheme.shapes.large)
             .combinedClickable(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,

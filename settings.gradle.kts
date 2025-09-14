@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":extension")
+
+
 include(":shared")
 
 

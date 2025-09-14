@@ -23,4 +23,5 @@
     <string name="extensions_management">Extensions Management</string>
     <string name="theme">Theme</string>
     <string name="theme_summary">IDE theme configuration</string>
+    <string name="todo">Not implementation yet</string>
 </resources>
