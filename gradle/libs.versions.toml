@@ -12,7 +12,7 @@ composeBom = "2025.09.00"
 kotlinxSerializationJson = "1.9.0"
 materialIconsExtended = "1.7.8"
 composePreference = "2.1.0"
-appcompat = "1.6.1"
+appcompat = "1.7.1"
 material = "1.13.0"
 
 [libraries]
