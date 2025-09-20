@@ -7,14 +7,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import io.github.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem
 
 @Composable
 fun SelectableCardDropDownMenu(
     expanded: Boolean,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
-    selectableCardDropDownMenuItems: List<io.github.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem> = emptyList(),
-    onClick: (io.github.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem) -> Unit = {}
+    selectableCardDropDownMenuItems: List<SelectableCardDropDownMenuItem> = emptyList(),
+    onClick: (SelectableCardDropDownMenuItem) -> Unit = {}
 ) {
     DropdownMenu(
         modifier = modifier,

@@ -17,6 +17,18 @@
         android:theme="@style/Theme.KoloIDE"
         tools:targetApi="33">
 
+        <receiver android:name=".receiver.ExtensionBroadcastReceiver"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <data android:scheme="package"/>
+            </intent-filter>
+
+        </receiver>
+
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"

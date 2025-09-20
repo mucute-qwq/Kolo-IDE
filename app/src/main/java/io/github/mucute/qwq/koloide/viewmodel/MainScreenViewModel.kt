@@ -60,7 +60,7 @@ class MainScreenViewModel : ViewModel() {
     val extensionCardDropDownMenuItems = listOf(
         SelectableCardDropDownMenuItem(
             leadingIcon = Icons.TwoTone.Delete,
-            textResId = R.string.delete
+            textResId = R.string.uninstall
         )
     )
 

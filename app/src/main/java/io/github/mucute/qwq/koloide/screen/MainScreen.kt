@@ -18,11 +18,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.mucute.qwq.koloide.R
+import io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
-    val viewModel: io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel = viewModel()
+    val viewModel: MainScreenViewModel = viewModel()
     val navItems = viewModel.navItems
     val selectedNavItem by viewModel.selectedNavItem.collectAsStateWithLifecycle()
 

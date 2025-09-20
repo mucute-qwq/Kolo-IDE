@@ -14,3 +14,6 @@ val Extension.label: String
 
 val Extension.description: String
     get() = applicationInfo.loadDescription(extensionMain.context.packageManager).toString()
+
+val Extension.packageName: String
+    get() = packageInfo.packageName

@@ -1,11 +1,17 @@
 package io.github.mucute.qwq.koloide.application
 
+import android.app.Application
+import android.content.Intent
+import android.content.IntentFilter
 import io.github.mucute.qwq.koloide.manager.ExtensionManager
+import io.github.mucute.qwq.koloide.receiver.ExtensionBroadcastReceiver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 
-class AppContext : android.app.Application() {
+class AppContext : Application() {
+
+    private lateinit var extensionBroadcastReceiver: ExtensionBroadcastReceiver
 
     companion object {
 
@@ -22,12 +28,22 @@ class AppContext : android.app.Application() {
         appScope = MainScope()
         instance = this
 
-        ExtensionManager.refresh()
+        ExtensionManager.refreshAll()
+        registerReceiver(
+            ExtensionBroadcastReceiver().also { extensionBroadcastReceiver = it },
+            IntentFilter().apply {
+                addAction(Intent.ACTION_PACKAGE_ADDED)
+                addAction(Intent.ACTION_PACKAGE_REMOVED)
+                addAction(Intent.ACTION_PACKAGE_REPLACED)
+                addDataScheme("package")
+            }
+        )
     }
 
     override fun onTerminate() {
         super.onTerminate()
         appScope.cancel()
+        unregisterReceiver(extensionBroadcastReceiver)
     }
 
 }

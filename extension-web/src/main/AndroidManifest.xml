@@ -14,7 +14,7 @@
 
         <meta-data
             android:name="koloide_extension_main"
-            android:value="io.githun.mucute.qwq.koloide.extension.web.WebExtensionMain"/>
+            android:value="io.github.mucute.qwq.koloide.extension.web.WebExtensionMain"/>
 
     </application>
 

@@ -26,18 +26,22 @@ import io.github.mucute.qwq.koloide.component.SelectableCard
 import io.github.mucute.qwq.koloide.component.SelectableCardDropDownMenu
 import io.github.mucute.qwq.koloide.navigation.LocalNavController
 import io.github.mucute.qwq.koloide.navigation.NavScreen
+import io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel
 
 @Composable
 fun HomePage() {
     val navController = LocalNavController.current
-    val viewModel: io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel = viewModel()
+    val viewModel: MainScreenViewModel = viewModel()
     val projectCardDropDownMenuItems = viewModel.projectCardDropDownMenuItems
     Box(Modifier.fillMaxSize()) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(1) { item ->
-                Column(Modifier.fillMaxWidth()) {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                ) {
                     var showProjectDropdownMenu by remember { mutableStateOf(false) }
                     SelectableCard(
                         rememberVectorPainter(Icons.Rounded.Code),

@@ -1,5 +1,6 @@
 package io.github.mucute.qwq.koloide.page.main
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,27 +18,36 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.mucute.qwq.koloide.component.SelectableCard
 import io.github.mucute.qwq.koloide.component.SelectableCardDropDownMenu
 import io.github.mucute.qwq.koloide.extension.description
 import io.github.mucute.qwq.koloide.extension.label
+import io.github.mucute.qwq.koloide.extension.packageName
 import io.github.mucute.qwq.koloide.manager.ExtensionManager
+import io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel
 
 @Composable
 fun ExtensionPage() {
     val extensions by ExtensionManager.extensions.collectAsStateWithLifecycle()
-    val viewModel: io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel = viewModel()
+    val viewModel: MainScreenViewModel = viewModel()
     val extensionCardDropDownMenuItems = viewModel.extensionCardDropDownMenuItems
+    val context = LocalContext.current
     Box(Modifier.fillMaxSize()) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(extensions.size) { index ->
                 val extension = extensions[index]
-                Column(Modifier.fillMaxWidth()) {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .animateItem()
+                ) {
                     var showExtensionDropdownMenu by remember { mutableStateOf(false) }
                     SelectableCard(
                         rememberVectorPainter(Icons.Rounded.Code),
@@ -64,7 +74,14 @@ fun ExtensionPage() {
                             },
                             selectableCardDropDownMenuItems = extensionCardDropDownMenuItems,
                             onClick = {
-
+                                val index = extensionCardDropDownMenuItems.indexOf(it).takeIf { index -> index >= 0 } ?: return@SelectableCardDropDownMenu
+                                when (index) {
+                                    0 -> {
+                                        context.startActivity(Intent(Intent.ACTION_DELETE).apply {
+                                            data = "package:${extension.packageName}".toUri()
+                                        })
+                                    }
+                                }
                             }
                         )
                     }
