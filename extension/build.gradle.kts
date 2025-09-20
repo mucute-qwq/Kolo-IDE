@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "io.githun.mucute.qwq.koloide.extension"
+    namespace = "io.github.mucute.qwq.koloide.extension"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

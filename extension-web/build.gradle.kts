@@ -6,10 +6,10 @@ plugins {
 }
 
 android {
-    namespace = "io.github.mucute.qwq.koloide"
+    namespace = "io.github.mucute.qwq.koloide.extension.web"
 }
 
 dependencies {
-    implementation(project(":extension"))
-    implementation(project(":shared"))
+    compileOnly(project(":extension"))
+    compileOnly(project(":shared"))
 }

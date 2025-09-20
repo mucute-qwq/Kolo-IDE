@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Web Extension For Kolo IDE</string>
+    <string name="app_description">Provide basic Web project support</string>
+</resources>
