@@ -3,6 +3,7 @@ package io.github.mucute.qwq.koloide.manager
 import android.content.Context
 import android.content.pm.PackageManager
 import dalvik.system.DexClassLoader
+import io.github.mucute.qwq.koloide.application.AppContext
 import io.github.mucute.qwq.koloide.extension.Extension
 import io.github.mucute.qwq.koloide.extension.ExtensionMain
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-private val appScope = _root_ide_package_.io.github.mucute.qwq.koloide.application.AppContext.Companion.appScope
+private val appScope = AppContext.Companion.appScope
 
 @Suppress("ConstPropertyName")
 object ExtensionManager {
@@ -27,7 +28,7 @@ object ExtensionManager {
         appScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
             throwable.printStackTrace()
         }) {
-            val context = _root_ide_package_.io.github.mucute.qwq.koloide.application.AppContext.Companion.instance
+            val context = AppContext.Companion.instance
             val packageManager = context.packageManager
             val packageInfos = packageManager.getInstalledPackages(
                 PackageManager.GET_META_DATA
@@ -59,7 +60,7 @@ object ExtensionManager {
                     val extensionContext = object : android.content.ContextWrapper(
                         context.createPackageContext(
                             packageInfo.packageName,
-                            Context.CONTEXT_IGNORE_SECURITY
+                            CONTEXT_IGNORE_SECURITY
                         )
                     ) {
                         override fun getClassLoader(): ClassLoader? {

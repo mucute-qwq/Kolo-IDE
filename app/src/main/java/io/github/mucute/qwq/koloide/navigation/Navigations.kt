@@ -7,8 +7,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.githun.mucute.qwq.koloide.screen.MainScreen
-import io.githun.mucute.qwq.koloide.screen.NewProjectScreen
+import io.github.mucute.qwq.koloide.screen.MainScreen
+import io.github.mucute.qwq.koloide.screen.NewProjectScreen
 import kotlinx.serialization.Serializable
 import me.zhanghai.compose.preference.ProvidePreferenceLocals
 
@@ -22,12 +22,12 @@ fun Navigation() {
                 startDestination = NavScreen.Main
             ) {
 
-                composable<NavScreen.Main>() {
-                    _root_ide_package_.io.github.mucute.qwq.koloide.screen.MainScreen()
+                composable<NavScreen.Main> {
+                    MainScreen()
                 }
 
                 composable<NavScreen.NewProject> {
-                    _root_ide_package_.io.github.mucute.qwq.koloide.screen.NewProjectScreen()
+                    NewProjectScreen()
                 }
 
             }

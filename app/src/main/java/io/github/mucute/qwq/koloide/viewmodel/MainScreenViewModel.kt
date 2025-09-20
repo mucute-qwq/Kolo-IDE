@@ -9,13 +9,12 @@ import androidx.compose.material.icons.twotone.Home
 import androidx.compose.material.icons.twotone.Settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.githun.mucute.qwq.koloide.R
-import io.githun.mucute.qwq.koloide.component.SelectableCardDropDownMenu
-import io.githun.mucute.qwq.koloide.model.NavItem
-import io.githun.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem
-import io.githun.mucute.qwq.koloide.page.main.DocumentPage
-import io.githun.mucute.qwq.koloide.page.main.ExtensionPage
-import io.githun.mucute.qwq.koloide.page.main.HomePage
+import io.github.mucute.qwq.koloide.R
+import io.github.mucute.qwq.koloide.model.NavItem
+import io.github.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem
+import io.github.mucute.qwq.koloide.page.main.DocumentPage
+import io.github.mucute.qwq.koloide.page.main.ExtensionPage
+import io.github.mucute.qwq.koloide.page.main.HomePage
 import io.github.mucute.qwq.koloide.page.main.SettingPage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,22 +24,22 @@ import kotlinx.coroutines.launch
 class MainScreenViewModel : ViewModel() {
 
     val navItems = listOf(
-        _root_ide_package_.io.github.mucute.qwq.koloide.model.NavItem(
+        NavItem(
             icon = Icons.TwoTone.Home,
             labelResId = R.string.home,
-            content = { _root_ide_package_.io.github.mucute.qwq.koloide.page.main.HomePage() }
+            content = { HomePage() }
         ),
-        _root_ide_package_.io.github.mucute.qwq.koloide.model.NavItem(
+        NavItem(
             icon = Icons.TwoTone.Extension,
             labelResId = R.string.extension,
-            content = { _root_ide_package_.io.github.mucute.qwq.koloide.page.main.ExtensionPage() }
+            content = { ExtensionPage() }
         ),
-        _root_ide_package_.io.github.mucute.qwq.koloide.model.NavItem(
+        NavItem(
             icon = Icons.TwoTone.Book,
             labelResId = R.string.document,
-            content = { _root_ide_package_.io.github.mucute.qwq.koloide.page.main.DocumentPage() }
+            content = { DocumentPage() }
         ),
-        _root_ide_package_.io.github.mucute.qwq.koloide.model.NavItem(
+        NavItem(
             icon = Icons.TwoTone.Settings,
             labelResId = R.string.setting,
             content = { SettingPage() }
@@ -48,18 +47,18 @@ class MainScreenViewModel : ViewModel() {
     )
 
     val projectCardDropDownMenuItems = listOf(
-        _root_ide_package_.io.github.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem(
+        SelectableCardDropDownMenuItem(
             leadingIcon = Icons.TwoTone.Edit,
             textResId = R.string.rename
         ),
-        _root_ide_package_.io.github.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem(
+        SelectableCardDropDownMenuItem(
             leadingIcon = Icons.TwoTone.Delete,
             textResId = R.string.delete
         ),
     )
 
     val extensionCardDropDownMenuItems = listOf(
-        _root_ide_package_.io.github.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem(
+        SelectableCardDropDownMenuItem(
             leadingIcon = Icons.TwoTone.Delete,
             textResId = R.string.delete
         )
@@ -69,7 +68,7 @@ class MainScreenViewModel : ViewModel() {
 
     val selectedNavItem = _selectedNavItem.asStateFlow()
 
-    fun selectNavItem(navItem: io.github.mucute.qwq.koloide.model.NavItem) {
+    fun selectNavItem(navItem: NavItem) {
         viewModelScope.launch {
             _selectedNavItem.update { navItem }
         }

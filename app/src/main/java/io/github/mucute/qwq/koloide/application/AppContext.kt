@@ -1,7 +1,6 @@
 package io.github.mucute.qwq.koloide.application
 
-import android.app.Application
-import io.githun.mucute.qwq.koloide.manager.ExtensionManager
+import io.github.mucute.qwq.koloide.manager.ExtensionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -23,7 +22,7 @@ class AppContext : android.app.Application() {
         appScope = MainScope()
         instance = this
 
-        _root_ide_package_.io.github.mucute.qwq.koloide.manager.ExtensionManager.refresh()
+        ExtensionManager.refresh()
     }
 
     override fun onTerminate() {

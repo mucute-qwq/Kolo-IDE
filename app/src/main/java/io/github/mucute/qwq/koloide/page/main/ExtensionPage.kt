@@ -20,12 +20,15 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import io.github.mucute.qwq.koloide.component.SelectableCard
+import io.github.mucute.qwq.koloide.component.SelectableCardDropDownMenu
 import io.github.mucute.qwq.koloide.extension.description
 import io.github.mucute.qwq.koloide.extension.label
+import io.github.mucute.qwq.koloide.manager.ExtensionManager
 
 @Composable
 fun ExtensionPage() {
-    val extensions by _root_ide_package_.io.github.mucute.qwq.koloide.manager.ExtensionManager.extensions.collectAsStateWithLifecycle()
+    val extensions by ExtensionManager.extensions.collectAsStateWithLifecycle()
     val viewModel: io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel = viewModel()
     val extensionCardDropDownMenuItems = viewModel.extensionCardDropDownMenuItems
     Box(Modifier.fillMaxSize()) {
@@ -36,7 +39,7 @@ fun ExtensionPage() {
                 val extension = extensions[index]
                 Column(Modifier.fillMaxWidth()) {
                     var showExtensionDropdownMenu by remember { mutableStateOf(false) }
-                    _root_ide_package_.io.github.mucute.qwq.koloide.component.SelectableCard(
+                    SelectableCard(
                         rememberVectorPainter(Icons.Rounded.Code),
                         title = extension.label,
                         subtitle = extension.description,
@@ -54,7 +57,7 @@ fun ExtensionPage() {
                             .padding(horizontal = 16.dp)
                             .align(Alignment.End)
                     ) {
-                        _root_ide_package_.io.github.mucute.qwq.koloide.component.SelectableCardDropDownMenu(
+                        SelectableCardDropDownMenu(
                             expanded = showExtensionDropdownMenu,
                             onDismissRequest = {
                                 showExtensionDropdownMenu = false

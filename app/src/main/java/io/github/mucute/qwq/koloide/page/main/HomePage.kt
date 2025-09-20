@@ -22,15 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.githun.mucute.qwq.koloide.component.SelectableCard
-import io.githun.mucute.qwq.koloide.component.SelectableCardDropDownMenu
-import io.githun.mucute.qwq.koloide.navigation.LocalNavController
-import io.githun.mucute.qwq.koloide.navigation.NavScreen
-import io.githun.mucute.qwq.koloide.viewmodel.MainScreenViewModel
+import io.github.mucute.qwq.koloide.component.SelectableCard
+import io.github.mucute.qwq.koloide.component.SelectableCardDropDownMenu
+import io.github.mucute.qwq.koloide.navigation.LocalNavController
+import io.github.mucute.qwq.koloide.navigation.NavScreen
 
 @Composable
 fun HomePage() {
-    val navController = _root_ide_package_.io.github.mucute.qwq.koloide.navigation.LocalNavController.current
+    val navController = LocalNavController.current
     val viewModel: io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel = viewModel()
     val projectCardDropDownMenuItems = viewModel.projectCardDropDownMenuItems
     Box(Modifier.fillMaxSize()) {
@@ -40,7 +39,7 @@ fun HomePage() {
             items(1) { item ->
                 Column(Modifier.fillMaxWidth()) {
                     var showProjectDropdownMenu by remember { mutableStateOf(false) }
-                    _root_ide_package_.io.github.mucute.qwq.koloide.component.SelectableCard(
+                    SelectableCard(
                         rememberVectorPainter(Icons.Rounded.Code),
                         title = "Blog $item",
                         subtitle = "Vue",
@@ -58,7 +57,7 @@ fun HomePage() {
                             .padding(horizontal = 16.dp)
                             .align(Alignment.End)
                     ) {
-                        _root_ide_package_.io.github.mucute.qwq.koloide.component.SelectableCardDropDownMenu(
+                        SelectableCardDropDownMenu(
                             expanded = showProjectDropdownMenu,
                             onDismissRequest = {
                                 showProjectDropdownMenu = false
@@ -77,7 +76,7 @@ fun HomePage() {
         }
         FloatingActionButton(
             onClick = {
-                navController.navigate(_root_ide_package_.io.github.mucute.qwq.koloide.navigation.NavScreen.NewProject)
+                navController.navigate(NavScreen.NewProject)
             },
             modifier = Modifier
                 .padding(16.dp)

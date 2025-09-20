@@ -11,10 +11,7 @@ import androidx.compose.ui.res.stringResource
 import io.github.mucute.qwq.koloide.component.dividerPreference
 import io.github.mucute.qwq.koloide.component.headerPreference
 import io.github.mucute.qwq.koloide.preference.Preference
-import io.githun.mucute.qwq.koloide.R
-import io.githun.mucute.qwq.koloide.component.dividerPreference
-import io.githun.mucute.qwq.koloide.component.headerPreference
-import io.githun.mucute.qwq.koloide.preference.Preference
+import io.github.mucute.qwq.koloide.R
 import me.zhanghai.compose.preference.preference
 
 @Composable
