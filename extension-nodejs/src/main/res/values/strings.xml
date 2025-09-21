@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NodeJS Extension</string>
+    <string name="app_description">Provide NodeJS running, debugging, and project support</string>
+</resources>

@@ -11,13 +11,18 @@ import io.github.mucute.qwq.koloide.application.AppContext
 import io.github.mucute.qwq.koloide.extension.Extension
 import io.github.mucute.qwq.koloide.extension.ExtensionMain
 import io.github.mucute.qwq.koloide.extension.packageName
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.suspendCoroutine
+import kotlin.time.Duration.Companion.seconds
 
 private val appScope = AppContext.Companion.appScope
 
@@ -26,52 +31,72 @@ object ExtensionManager {
 
     private const val KoloIDE_Extension_Main = "koloide_extension_main"
 
+    private val _state = MutableStateFlow(State.Processing)
+
+    val state = _state.asStateFlow()
+
     private val _extensions = MutableStateFlow<List<Extension>>(emptyList())
 
     val extensions = _extensions.asStateFlow()
 
     fun refreshAll() {
-        appScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
-            throwable.printStackTrace()
+        appScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, _ ->
+
         }) {
+            _state.update { State.Processing }
+            _extensions.update { refreshAllSuspend() }
+
+        }.invokeOnCompletion {
+            _state.update { State.Idle }
+        }
+    }
+
+    private suspend fun refreshAllSuspend(): List<Extension> {
+        return withContext(Dispatchers.IO) {
             val context = AppContext.Companion.instance
             val packageManager = context.packageManager
-            val packageInfos = packageManager.getInstalledPackages(
-                PackageManager.GET_META_DATA
-            )
-            val packagePairs = packageInfos
-                .mapNotNull { packageInfo ->
-                    val applicationInfo = packageInfo.applicationInfo ?: return@mapNotNull null
-                    val metaData = applicationInfo.metaData ?: return@mapNotNull null
-                    metaData.getString(KoloIDE_Extension_Main) ?: return@mapNotNull null
-                    packageInfo to applicationInfo
-                }
+            val packageNames = packageManager.getInstalledPackages(0).map { it.packageName }
             val extensions = ArrayList<Extension>()
 
-            packagePairs.forEach { packagePair ->
-                runCatching {
-                    val packageInfo = packagePair.first
-                    val applicationInfo = packagePair.second
-                    val extensionMainClassName =
-                        applicationInfo.metaData.getString(KoloIDE_Extension_Main)!!
-                    val extensionMain =
-                        createExtensionMain(extensionMainClassName, applicationInfo, packageInfo)
-
-                    extensions.add(
-                        Extension(
-                            packageInfo = packageInfo,
-                            applicationInfo = applicationInfo,
-                            extensionMain = extensionMain
-                        )
-                    )
-                }.exceptionOrNull()?.printStackTrace()
+            supervisorScope {
+                packageNames.forEach { packageName ->
+                    launch {
+                        extensions += createExtensionSuspend(packageName)
+                    }
+                }
             }
 
-            _extensions.update {
-                extensions
-                    .sortedBy { it.packageName }
-                    .toList()
-            }
+            extensions
+                .sortedBy { it.packageName }
+                .toList()
+        }
+    }
+
+    private suspend fun findExtensionSuspend(packageName: String): Extension? {
+        return withContext(Dispatchers.IO) {
+            _extensions.value.find { it.packageName == packageName }
+        }
+    }
+
+    private suspend fun createExtensionSuspend(packageName: String): Extension {
+        return withContext(Dispatchers.IO) {
+            val context = AppContext.Companion.instance
+            val packageManager = context.packageManager
+            val packageInfo =
+                packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)!!
+            val applicationInfo =
+                packageInfo.applicationInfo!!
+            val metaData = applicationInfo.metaData!!
+            val extensionMainClassName =
+                metaData.getString(KoloIDE_Extension_Main)!!
+            val extensionMain =
+                createExtensionMain(extensionMainClassName, applicationInfo, packageInfo)
+
+            Extension(
+                packageInfo = packageInfo,
+                applicationInfo = applicationInfo,
+                extensionMain = extensionMain
+            )
         }
     }
 
@@ -79,33 +104,25 @@ object ExtensionManager {
         appScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
             throwable.printStackTrace()
         }) {
-            addExtensionIfNeededSuspend(packageName)
+            _state.update { State.Processing }
+            delay(0.5.seconds)
+            _extensions.update { addExtensionIfNeededSuspend(packageName) }
+
+        }.invokeOnCompletion {
+            _state.update { State.Idle }
         }
     }
 
-    private suspend fun addExtensionIfNeededSuspend(packageName: String) {
+    private suspend fun addExtensionIfNeededSuspend(packageName: String): List<Extension> {
         return withContext(Dispatchers.IO) {
-            val context = AppContext.Companion.instance
-            val packageManager = context.packageManager
-            val packageInfo =
-                packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
-                    ?: return@withContext
-            val applicationInfo = packageInfo.applicationInfo ?: return@withContext
-            val metaData = applicationInfo.metaData ?: return@withContext
-            val extensionMainClassName = metaData.getString(KoloIDE_Extension_Main) ?: return@withContext
-            val extensionMain =
-                createExtensionMain(extensionMainClassName, applicationInfo, packageInfo)
-
-            val extension = Extension(
-                packageInfo = packageInfo,
-                applicationInfo = applicationInfo,
-                extensionMain = extensionMain
-            )
-
-            _extensions.update { extensions ->
-                (extensions + listOf(extension))
-                    .sortedBy { it.packageName }
+            val extensions = _extensions.value
+            if (findExtensionSuspend(packageName) != null) {
+                return@withContext extensions
             }
+
+            (extensions + createExtensionSuspend(packageName))
+                .sortedBy { it.packageName }
+                .toList()
         }
     }
 
@@ -113,19 +130,23 @@ object ExtensionManager {
         appScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
             throwable.printStackTrace()
         }) {
-            removeExtensionIfNeededSuspend(packageName)
+            _state.update { State.Processing }
+            delay(0.5.seconds)
+            _extensions.update { removeExtensionIfNeededSuspend(packageName) }
+
+        }.invokeOnCompletion {
+            _state.update { State.Idle }
         }
     }
 
-    private suspend fun removeExtensionIfNeededSuspend(packageName: String) {
+    private suspend fun removeExtensionIfNeededSuspend(packageName: String): List<Extension> {
         return withContext(Dispatchers.IO) {
-            val extension = extensions.value.find { it.packageName == packageName } ?: return@withContext
-            _extensions.update { extensions ->
-                extensions.toMutableList()
-                    .apply { remove(extension) }
-                    .sortedBy { it.packageName }
-                    .toList()
-            }
+            val extensions = _extensions.value
+            val extension = findExtensionSuspend(packageName) ?: return@withContext extensions
+
+            (extensions - extension)
+                .sortedBy { it.packageName }
+                .toList()
         }
     }
 
@@ -133,14 +154,29 @@ object ExtensionManager {
         appScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
             throwable.printStackTrace()
         }) {
-            replaceExtensionIfNeededSuspend(packageName)
+            _state.update { State.Processing }
+            delay(0.5.seconds)
+            _extensions.update { replaceExtensionIfNeededSuspend(packageName) }
+
+        }.invokeOnCompletion {
+            _state.update { State.Idle }
         }
     }
 
-    private suspend fun replaceExtensionIfNeededSuspend(packageName: String) {
+    private suspend fun replaceExtensionIfNeededSuspend(packageName: String): List<Extension> {
         return withContext(Dispatchers.IO) {
-            removeExtensionIfNeededSuspend(packageName)
-            addExtensionIfNeededSuspend(packageName)
+            val extensions = _extensions.value
+            val extension = findExtensionSuspend(packageName)?.let { listOf(it) } ?: emptyList()
+            val newExtension = try {
+                listOf(createExtensionSuspend(packageName))
+            } catch (e: Throwable) {
+                if (e is CancellationException) throw e
+                emptyList()
+            }
+
+            (extensions - extension + newExtension)
+                .sortedBy { it.packageName }
+                .toList()
         }
     }
 
@@ -194,6 +230,13 @@ object ExtensionManager {
             extensionClassLoader,
             createContext(packageInfo, extensionClassLoader)
         )
+    }
+
+    enum class State {
+
+
+        Idle, Processing
+
     }
 
 }

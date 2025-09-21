@@ -16,17 +16,25 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.mucute.qwq.koloide.navigation.LocalNavController
 import io.github.mucute.qwq.koloide.R
 import io.github.mucute.qwq.koloide.component.GalleryCard
+import io.github.mucute.qwq.koloide.component.LoadingContent
+import io.github.mucute.qwq.koloide.component.useExtensionContext
+import io.github.mucute.qwq.koloide.manager.ExtensionManager
+import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewProjectScreen() {
+    val extensionState by ExtensionManager.state.collectAsStateWithLifecycle()
     val navController = LocalNavController.current
     Scaffold(
         topBar = {
@@ -47,21 +55,38 @@ fun NewProjectScreen() {
         }
     ) {
         Column(Modifier.padding(it)) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(16.dp)
+            LoadingContent(
+                isLoading = extensionState === ExtensionManager.State.Processing
             ) {
-                items(4) { item ->
-                    GalleryCard(
-                        rememberVectorPainter(Icons.TwoTone.Code),
-                        onClick = {
-
-                        }
-                    )
-                }
+                NewProjectItems()
             }
+        }
+    }
+}
+
+@Composable
+private fun NewProjectItems() {
+    val extensions by ExtensionManager.extensions
+        .map { it.filter { extension -> extension.extensionMain.extensionProject() != null } }
+        .collectAsStateWithLifecycle(emptyList())
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(16.dp)
+    ) {
+        items(extensions.size) { index ->
+            val extension = extensions[index]
+            val extensionProject = extension.extensionMain.extensionProject() ?: return@items
+            GalleryCard(
+                painter = extension.useExtensionContext {
+                    extensionProject.newProjectIcon()
+                },
+                onClick = {
+
+                }
+            )
         }
     }
 }

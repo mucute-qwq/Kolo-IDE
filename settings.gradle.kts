@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":extension-nodejs")
+
+
 include(":extension-web")
 
 
