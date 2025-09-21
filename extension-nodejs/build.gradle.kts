@@ -7,6 +7,8 @@ plugins {
 
 android {
     namespace = "io.github.mucute.qwq.koloide.extension.nodejs"
+
+    resourcePrefix = "nodejs_"
 }
 
 dependencies {

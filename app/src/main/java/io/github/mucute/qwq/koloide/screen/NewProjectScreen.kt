@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.ArrowBack
-import androidx.compose.material.icons.twotone.Code
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -17,24 +16,26 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.mucute.qwq.koloide.navigation.LocalNavController
 import io.github.mucute.qwq.koloide.R
 import io.github.mucute.qwq.koloide.component.GalleryCard
 import io.github.mucute.qwq.koloide.component.LoadingContent
-import io.github.mucute.qwq.koloide.component.useExtensionContext
+import io.github.mucute.qwq.koloide.extension.Extension
 import io.github.mucute.qwq.koloide.manager.ExtensionManager
+import io.github.mucute.qwq.koloide.navigation.LocalNavController
 import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewProjectScreen() {
     val extensionState by ExtensionManager.state.collectAsStateWithLifecycle()
+    val extensions by ExtensionManager.extensions
+        .map { it.filter { extension -> extension.extensionMain.extensionProject() != null } }
+        .collectAsStateWithLifecycle(emptyList())
+
     val navController = LocalNavController.current
     Scaffold(
         topBar = {
@@ -58,18 +59,16 @@ fun NewProjectScreen() {
             LoadingContent(
                 isLoading = extensionState === ExtensionManager.State.Processing
             ) {
-                NewProjectItems()
+                NewProjectItems(extensions)
             }
         }
     }
 }
 
 @Composable
-private fun NewProjectItems() {
-    val extensions by ExtensionManager.extensions
-        .map { it.filter { extension -> extension.extensionMain.extensionProject() != null } }
-        .collectAsStateWithLifecycle(emptyList())
-
+private fun NewProjectItems(
+    extensions: List<Extension>
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -80,9 +79,7 @@ private fun NewProjectItems() {
             val extension = extensions[index]
             val extensionProject = extension.extensionMain.extensionProject() ?: return@items
             GalleryCard(
-                painter = extension.useExtensionContext {
-                    extensionProject.newProjectIcon()
-                },
+                painter = extensionProject.newProjectIcon(),
                 onClick = {
 
                 }

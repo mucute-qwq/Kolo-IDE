@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,26 +22,35 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.mucute.qwq.koloide.component.LoadingContent
 import io.github.mucute.qwq.koloide.component.SelectableCard
 import io.github.mucute.qwq.koloide.component.SelectableCardDropDownMenu
-import io.github.mucute.qwq.koloide.component.useExtensionContext
+import io.github.mucute.qwq.koloide.extension.Extension
 import io.github.mucute.qwq.koloide.extension.description
 import io.github.mucute.qwq.koloide.extension.label
 import io.github.mucute.qwq.koloide.extension.packageName
 import io.github.mucute.qwq.koloide.manager.ExtensionManager
+import io.github.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem
 import io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel
 
 @Composable
 fun ExtensionPage() {
     val extensionState by ExtensionManager.state.collectAsStateWithLifecycle()
-    LoadingContent(extensionState === ExtensionManager.State.Processing) {
-        ExtensionItems()
+    val extensions by ExtensionManager.extensions.collectAsStateWithLifecycle()
+    val viewModel: MainScreenViewModel = viewModel()
+    val extensionCardDropDownMenuItems = viewModel.extensionCardDropDownMenuItems
+    LoadingContent(
+        isLoading = extensionState === ExtensionManager.State.Processing
+    ) {
+        ExtensionItems(
+            extensions,
+            extensionCardDropDownMenuItems
+        )
     }
 }
 
 @Composable
-private fun ExtensionItems() {
-    val extensions by ExtensionManager.extensions.collectAsStateWithLifecycle()
-    val viewModel: MainScreenViewModel = viewModel()
-    val extensionCardDropDownMenuItems = viewModel.extensionCardDropDownMenuItems
+private fun ExtensionItems(
+    extensions: List<Extension>,
+    extensionCardDropDownMenuItems: List<SelectableCardDropDownMenuItem>
+) {
     val context = LocalContext.current
 
     LazyColumn(
@@ -56,9 +64,7 @@ private fun ExtensionItems() {
             ) {
                 var showExtensionDropdownMenu by remember { mutableStateOf(false) }
                 SelectableCard(
-                    painter = extension.useExtensionContext {
-                        it.extensionMain.icon()
-                    },
+                    painter = extension.extensionMain.icon(),
                     title = extension.label,
                     subtitle = extension.description,
                     modifier = Modifier

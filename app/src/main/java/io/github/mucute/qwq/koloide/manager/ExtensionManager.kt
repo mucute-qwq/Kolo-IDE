@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.suspendCoroutine
 import kotlin.time.Duration.Companion.seconds
 
 private val appScope = AppContext.Companion.appScope
