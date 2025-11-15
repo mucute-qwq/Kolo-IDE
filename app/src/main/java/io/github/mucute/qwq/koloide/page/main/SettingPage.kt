@@ -8,19 +8,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
 import io.github.mucute.qwq.koloide.component.dividerPreference
 import io.github.mucute.qwq.koloide.component.headerPreference
 import io.github.mucute.qwq.koloide.preference.Preference
 import io.github.mucute.qwq.koloide.R
+import io.github.mucute.qwq.koloide.navigation.LocalNavController
+import io.github.mucute.qwq.koloide.navigation.NavScreen
 import me.zhanghai.compose.preference.preference
 
 @Composable
 fun SettingPage() {
+    val navController = LocalNavController.current
     Column(Modifier.fillMaxSize()) {
         LazyColumn {
             generalPreferences()
-            extensionsPreferences()
-            developerOptionsPreferences()
+            modulesPreferences()
+            developerOptionsPreferences(navController)
             aboutPreferences()
         }
     }
@@ -58,7 +62,7 @@ private fun LazyListScope.generalPreferences() {
     dividerPreference()
 }
 
-private fun LazyListScope.extensionsPreferences() {
+private fun LazyListScope.modulesPreferences() {
     headerPreference(
         key = Preference.Main.SettingPage.ModulesHeader,
         summary = { Text(stringResource(R.string.module)) }
@@ -72,16 +76,18 @@ private fun LazyListScope.extensionsPreferences() {
     dividerPreference()
 }
 
-private fun LazyListScope.developerOptionsPreferences() {
+private fun LazyListScope.developerOptionsPreferences(navController: NavController) {
     headerPreference(
         key = Preference.Main.SettingPage.DeveloperOptionsHeader,
         summary = { Text(stringResource(R.string.developer_options)) }
     )
     preference(
-        key = Preference.Main.SettingPage.DeveloperOptions,
-        title = { Text(stringResource(R.string.developer_options)) },
-        summary = { Text(stringResource(R.string.developer_options_summary)) },
-        onClick = {}
+        key = Preference.Main.SettingPage.Terminal,
+        title = { Text(stringResource(R.string.terminal)) },
+        summary = { Text(stringResource(R.string.terminal_summary)) },
+        onClick = {
+            navController.navigate(NavScreen.Terminal)
+        }
     )
     dividerPreference()
 }

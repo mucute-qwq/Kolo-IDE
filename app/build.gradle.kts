@@ -7,6 +7,22 @@ plugins {
 
 android {
     namespace = "io.github.mucute.qwq.koloide"
+
+    defaultConfig {
+        externalNativeBuild {
+            cmake {
+                cppFlags += ""
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
+    }
+
 }
 
 dependencies {

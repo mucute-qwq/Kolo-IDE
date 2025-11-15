@@ -16,7 +16,7 @@
     <string name="build_and_run">Build &amp; Run</string>
     <string name="build_and_run_summary">Building and running configuration</string>
     <string name="developer_options">Developer Options</string>
-    <string name="developer_options_summary">Experimental features and debugging features</string>
+    <string name="terminal">Terminal</string>
     <string name="about">About</string>
     <string name="about_summary">More about Kolo IDE</string>
     <string name="modules_management_summary">Modifying module options</string>
@@ -25,4 +25,5 @@
     <string name="theme_summary">IDE theme configuration</string>
     <string name="todo">Not implementation yet</string>
     <string name="uninstall">Uninstall</string>
+    <string name="terminal_summary">Uses developer terminal</string>
 </resources>

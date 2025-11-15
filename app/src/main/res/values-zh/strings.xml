@@ -16,7 +16,7 @@
     <string name="build_and_run">构建和运行</string>
     <string name="build_and_run_summary">构建和运行配置</string>
     <string name="developer_options">开发者选项</string>
-    <string name="developer_options_summary">实验性功能和调试功能</string>
+    <string name="terminal">终端</string>
     <string name="about">关于</string>
     <string name="about_summary">关于 Kolo IDE 的更多信息</string>
     <string name="modules_management_summary">修改模块的可选项</string>
@@ -25,4 +25,5 @@
     <string name="theme_summary">IDE 主题配置</string>
     <string name="todo">尚未实现</string>
     <string name="uninstall">卸载</string>
+    <string name="terminal_summary">使用开发者终端</string>
 </resources>

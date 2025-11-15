@@ -92,7 +92,7 @@ private fun CodeEditor() {
             lspEditor.editor = codeEditor
             lspEditor.wrapperLanguage = codeEditor.editorLanguage
             lspEditor.isEnableInlayHint = true
-            lspEditor.connect()
+            // lspEditor.connect()
 
             codeEditor
         },

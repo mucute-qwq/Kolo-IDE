@@ -23,7 +23,7 @@ sealed interface Preference {
 
             const val DeveloperOptionsHeader = "developer_options_header"
 
-            const val DeveloperOptions = "developer_options"
+            const val Terminal = "terminal"
 
             const val AboutHeader = "about_header"
 

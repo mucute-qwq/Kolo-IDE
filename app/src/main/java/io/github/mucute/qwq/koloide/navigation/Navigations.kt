@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import io.github.mucute.qwq.koloide.screen.LspTestScreen
 import io.github.mucute.qwq.koloide.screen.MainScreen
 import io.github.mucute.qwq.koloide.screen.NewProjectScreen
+import io.github.mucute.qwq.koloide.screen.TerminalScreen
 import kotlinx.serialization.Serializable
 import me.zhanghai.compose.preference.ProvidePreferenceLocals
 
@@ -31,6 +32,10 @@ fun Navigation() {
                     NewProjectScreen()
                 }
 
+                composable<NavScreen.Terminal> {
+                    TerminalScreen()
+                }
+
                 composable<NavScreen.LspTest> {
                     LspTestScreen()
                 }
@@ -47,7 +52,10 @@ sealed interface NavScreen {
     object Main : NavScreen
 
     @Serializable
-    object NewProject: NavScreen
+    object NewProject : NavScreen
+
+    @Serializable
+    object Terminal : NavScreen
 
     @Serializable
     object LspTest : NavScreen
