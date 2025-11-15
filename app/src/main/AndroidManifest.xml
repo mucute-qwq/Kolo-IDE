@@ -19,8 +19,10 @@
 
         <activity
             android:name=".activity.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|uiMode|keyboard|navigation"
             android:exported="true"
-            android:theme="@style/Theme.KoloIDE">
+            android:theme="@style/Theme.KoloIDE"
+            android:windowSoftInputMode="adjustResize">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

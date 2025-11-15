@@ -53,7 +53,7 @@ fun HomePage() {
                             showProjectDropdownMenu = true
                         },
                         onClick = {
-
+                            navController.navigate(NavScreen.LspTest)
                         }
                     )
                     Box(

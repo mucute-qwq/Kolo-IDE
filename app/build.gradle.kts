@@ -13,4 +13,10 @@ dependencies {
     implementation(project(":shared"))
     implementation(project(":module"))
     implementation(project(":module-nodejs"))
+    implementation(platform(libs.editor.bom))
+    implementation(libs.editor)
+    implementation(libs.editor.lsp)
+    implementation(libs.language.monarch)
+    implementation(libs.monarch.code)
+    implementation(libs.monarch.language.pack)
 }
