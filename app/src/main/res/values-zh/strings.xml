@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="home">主页</string>
-    <string name="extension">扩展</string>
+    <string name="module">模块</string>
     <string name="document">文档</string>
     <string name="setting">设置</string>
     <string name="project_type">%s 项目</string>
@@ -19,8 +19,8 @@
     <string name="developer_options_summary">实验性功能和调试功能</string>
     <string name="about">关于</string>
     <string name="about_summary">关于 Kolo IDE 的更多信息</string>
-    <string name="extensions_management_summary">修改扩展的可选项</string>
-    <string name="extensions_management">扩展管理</string>
+    <string name="modules_management_summary">修改模块的可选项</string>
+    <string name="modules_management">模块管理</string>
     <string name="theme">主题</string>
     <string name="theme_summary">IDE 主题配置</string>
     <string name="todo">尚未实现</string>

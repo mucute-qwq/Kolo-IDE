@@ -1,5 +1,0 @@
-<resources>
-
-    <style name="Theme.KoloIDE" parent="android:Theme.Material.Light.NoActionBar" />
-
-</resources>

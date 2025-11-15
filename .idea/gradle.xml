@@ -26,9 +26,8 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/build-logic/convention" />
-            <option value="$PROJECT_DIR$/extension" />
-            <option value="$PROJECT_DIR$/extension-nodejs" />
-            <option value="$PROJECT_DIR$/extension-web" />
+            <option value="$PROJECT_DIR$/module" />
+            <option value="$PROJECT_DIR$/module-nodejs" />
             <option value="$PROJECT_DIR$/shared" />
           </set>
         </option>

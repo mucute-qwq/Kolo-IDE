@@ -60,13 +60,13 @@ private fun LazyListScope.generalPreferences() {
 
 private fun LazyListScope.extensionsPreferences() {
     headerPreference(
-        key = Preference.Main.SettingPage.ExtensionsHeader,
-        summary = { Text(stringResource(R.string.extension)) }
+        key = Preference.Main.SettingPage.ModulesHeader,
+        summary = { Text(stringResource(R.string.module)) }
     )
     preference(
-        key = Preference.Main.SettingPage.ExtensionsManagement,
-        title = { Text(stringResource(R.string.extensions_management)) },
-        summary = { Text(stringResource(R.string.extensions_management_summary)) },
+        key = Preference.Main.SettingPage.ModulesManagement,
+        title = { Text(stringResource(R.string.modules_management)) },
+        summary = { Text(stringResource(R.string.modules_management_summary)) },
         onClick = {}
     )
     dividerPreference()

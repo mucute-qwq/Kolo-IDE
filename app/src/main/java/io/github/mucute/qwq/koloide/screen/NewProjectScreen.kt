@@ -23,18 +23,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.mucute.qwq.koloide.R
 import io.github.mucute.qwq.koloide.component.GalleryCard
 import io.github.mucute.qwq.koloide.component.LoadingContent
-import io.github.mucute.qwq.koloide.extension.Extension
-import io.github.mucute.qwq.koloide.manager.ExtensionManager
+import io.github.mucute.qwq.koloide.manager.ModuleManager
+import io.github.mucute.qwq.koloide.module.Module
 import io.github.mucute.qwq.koloide.navigation.LocalNavController
-import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewProjectScreen() {
-    val extensionState by ExtensionManager.state.collectAsStateWithLifecycle()
-    val extensions by ExtensionManager.extensions
-        .map { it.filter { extension -> extension.extensionMain.extensionProject() != null } }
-        .collectAsStateWithLifecycle(emptyList())
+    val moduleState by ModuleManager.state.collectAsStateWithLifecycle()
+    val modules by ModuleManager.modules.collectAsStateWithLifecycle()
 
     val navController = LocalNavController.current
     Scaffold(
@@ -57,9 +54,9 @@ fun NewProjectScreen() {
     ) {
         Column(Modifier.padding(it)) {
             LoadingContent(
-                isLoading = extensionState === ExtensionManager.State.Processing
+                isLoading = moduleState === ModuleManager.State.Processing
             ) {
-                NewProjectItems(extensions)
+                NewProjectItems(modules)
             }
         }
     }
@@ -67,7 +64,7 @@ fun NewProjectScreen() {
 
 @Composable
 private fun NewProjectItems(
-    extensions: List<Extension>
+    modules: List<Module>
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -75,11 +72,10 @@ private fun NewProjectItems(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(16.dp)
     ) {
-        items(extensions.size) { index ->
-            val extension = extensions[index]
-            val extensionProject = extension.extensionMain.extensionProject() ?: return@items
+        items(modules.size) { index ->
+            val module = modules[index]
             GalleryCard(
-                painter = extensionProject.newProjectIcon(),
+                painter = module.newProjectIcon(),
                 onClick = {
 
                 }

@@ -17,9 +17,9 @@ sealed interface Preference {
 
             const val BuildAndRun = "build_and_run"
 
-            const val ExtensionsHeader = "extensions_header"
+            const val ModulesHeader = "modules_header"
 
-            const val ExtensionsManagement = "extensions_management"
+            const val ModulesManagement = "extensions_management"
 
             const val DeveloperOptionsHeader = "developer_options_header"
 

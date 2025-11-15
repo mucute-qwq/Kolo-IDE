@@ -1,15 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":extension-nodejs")
+include(":module-nodejs")
 
-
-include(":extension-web")
-
-
-include(":extension")
-
-
-include(":shared")
 
 
 pluginManagement {
@@ -37,3 +29,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Kolo IDE"
 include(":app")
+include(":shared")
+include(":module")

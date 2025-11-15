@@ -10,6 +10,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":extension"))
     implementation(project(":shared"))
+    implementation(project(":module"))
+    implementation(project(":module-nodejs"))
 }

@@ -4,16 +4,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Book
 import androidx.compose.material.icons.twotone.Delete
 import androidx.compose.material.icons.twotone.Edit
-import androidx.compose.material.icons.twotone.Extension
 import androidx.compose.material.icons.twotone.Home
 import androidx.compose.material.icons.twotone.Settings
+import androidx.compose.material.icons.twotone.Token
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.mucute.qwq.koloide.R
 import io.github.mucute.qwq.koloide.model.NavItem
 import io.github.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem
 import io.github.mucute.qwq.koloide.page.main.DocumentPage
-import io.github.mucute.qwq.koloide.page.main.ExtensionPage
+import io.github.mucute.qwq.koloide.page.main.ModulePage
 import io.github.mucute.qwq.koloide.page.main.HomePage
 import io.github.mucute.qwq.koloide.page.main.SettingPage
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,9 +30,9 @@ class MainScreenViewModel : ViewModel() {
             content = { HomePage() }
         ),
         NavItem(
-            icon = Icons.TwoTone.Extension,
-            labelResId = R.string.extension,
-            content = { ExtensionPage() }
+            icon = Icons.TwoTone.Token,
+            labelResId = R.string.module,
+            content = { ModulePage() }
         ),
         NavItem(
             icon = Icons.TwoTone.Book,
@@ -57,7 +57,7 @@ class MainScreenViewModel : ViewModel() {
         ),
     )
 
-    val extensionCardDropDownMenuItems = listOf(
+    val moduleCardDropDownMenuItems = listOf(
         SelectableCardDropDownMenuItem(
             leadingIcon = Icons.TwoTone.Delete,
             textResId = R.string.uninstall

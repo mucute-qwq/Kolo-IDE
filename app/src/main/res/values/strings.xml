@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Kolo IDE</string>
     <string name="home">Home</string>
-    <string name="extension">Extension</string>
+    <string name="module">Module</string>
     <string name="document">Document</string>
     <string name="setting">Setting</string>
     <string name="project_type">%s Project</string>
@@ -19,8 +19,8 @@
     <string name="developer_options_summary">Experimental features and debugging features</string>
     <string name="about">About</string>
     <string name="about_summary">More about Kolo IDE</string>
-    <string name="extensions_management_summary">Modifying extension options</string>
-    <string name="extensions_management">Extensions Management</string>
+    <string name="modules_management_summary">Modifying module options</string>
+    <string name="modules_management">Modules Management</string>
     <string name="theme">Theme</string>
     <string name="theme_summary">IDE theme configuration</string>
     <string name="todo">Not implementation yet</string>
