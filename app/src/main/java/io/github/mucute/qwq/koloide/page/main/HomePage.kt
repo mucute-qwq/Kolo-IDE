@@ -1,5 +1,6 @@
 package io.github.mucute.qwq.koloide.page.main
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,8 +21,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import io.github.mucute.qwq.koloide.activity.LspTestActivity
 import io.github.mucute.qwq.koloide.component.SelectableCard
 import io.github.mucute.qwq.koloide.component.SelectableCardDropDownMenu
 import io.github.mucute.qwq.koloide.navigation.LocalNavController
@@ -30,6 +33,7 @@ import io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel
 
 @Composable
 fun HomePage() {
+    val context = LocalContext.current
     val navController = LocalNavController.current
     val viewModel: MainScreenViewModel = viewModel()
     val projectCardDropDownMenuItems = viewModel.projectCardDropDownMenuItems
@@ -53,7 +57,7 @@ fun HomePage() {
                             showProjectDropdownMenu = true
                         },
                         onClick = {
-                            navController.navigate(NavScreen.LspTest)
+                            context.startActivity(Intent(context, LspTestActivity::class.java))
                         }
                     )
                     Box(

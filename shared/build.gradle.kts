@@ -17,6 +17,8 @@ dependencies {
     api(libs.language.monarch)
     api(libs.monarch.code)
     api(libs.monarch.language.pack)
+    api(libs.lsp4j)
+    api("com.github.topjohnwu.libsu:core:6.0.0")
     api(libs.compose.preference)
     api(libs.androidx.core.ktx)
     api(libs.androidx.lifecycle.runtime.ktx)

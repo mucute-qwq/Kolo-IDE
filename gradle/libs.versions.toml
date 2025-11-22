@@ -16,6 +16,7 @@ materialIconsExtended = "1.7.8"
 composePreference = "2.1.0"
 monarch-code = "1.0.3"
 monarch-language-pack = "1.0.2"
+lsp4j = "0.24.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -27,6 +28,7 @@ oniguruma-native = { group = "io.github.rosemoe", name = "oniguruma-native" }
 language-monarch = { module = "io.github.rosemoe:language-monarch" }
 monarch-code = { group = "io.github.dingyi222666.monarch", name = "monarch", version.ref = "monarch-code" }
 monarch-language-pack = { group = "io.github.dingyi222666.monarch", name = "monarch-language-pack", version.ref = "monarch-language-pack" }
+lsp4j = { group = "org.eclipse.lsp4j", name = "org.eclipse.lsp4j", version.ref = "lsp4j" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

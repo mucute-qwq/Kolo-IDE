@@ -15,6 +15,7 @@ fun TerminalScreen() {
         currentWorkingDirectory = context.filesDir.absolutePath,
         environment = cn.mucute.merminal.composable.systemEnvironment().apply {
             put("HOME", context.filesDir.absolutePath)
+            put("PATH", "${System.getenv("PATH")}:${context.filesDir.resolve("usr/bin")}")
         },
         command = null
     )

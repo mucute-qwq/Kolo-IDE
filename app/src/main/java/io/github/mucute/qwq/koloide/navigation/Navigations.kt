@@ -7,7 +7,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.github.mucute.qwq.koloide.screen.LspTestScreen
 import io.github.mucute.qwq.koloide.screen.MainScreen
 import io.github.mucute.qwq.koloide.screen.NewProjectScreen
 import io.github.mucute.qwq.koloide.screen.TerminalScreen
@@ -36,10 +35,6 @@ fun Navigation() {
                     TerminalScreen()
                 }
 
-                composable<NavScreen.LspTest> {
-                    LspTestScreen()
-                }
-
             }
         }
     }
@@ -56,9 +51,6 @@ sealed interface NavScreen {
 
     @Serializable
     object Terminal : NavScreen
-
-    @Serializable
-    object LspTest : NavScreen
 
 }
 

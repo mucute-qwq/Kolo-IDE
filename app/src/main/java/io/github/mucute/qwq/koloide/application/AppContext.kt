@@ -35,7 +35,7 @@ class AppContext : Application() {
         MonarchGrammarRegistry.INSTANCE.loadGrammars(monarchLanguages {
             language("javascript") {
                 monarchLanguage = JavascriptLanguage
-                defaultScopeName()
+                scopeName = "source.js"
                 languageConfiguration = "textmate/javascript/language-configuration.json"
             }
         })
