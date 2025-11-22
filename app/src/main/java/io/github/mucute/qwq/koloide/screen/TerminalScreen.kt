@@ -1,24 +1,29 @@
 package io.github.mucute.qwq.koloide.screen
 
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import cn.mucute.merminal.composable.Terminal
 import cn.mucute.merminal.composable.rememberSessionController
-import cn.mucute.merminal.composable.systemEnvironment
+import io.github.mucute.qwq.koloide.navigation.LocalNavController
 
 @Composable
 fun TerminalScreen() {
     val context = LocalContext.current
+    val navController = LocalNavController.current
     val sessionController = rememberSessionController(
         currentWorkingDirectory = context.filesDir.absolutePath,
-        environment = systemEnvironment().apply {
+        environment = cn.mucute.merminal.composable.systemEnvironment().apply {
             put("HOME", context.filesDir.absolutePath)
-        }
+        },
+        command = null
     )
-    Terminal(
-        sessionController = sessionController,
-        modifier = Modifier.systemBarsPadding()
-    )
+    Surface {
+        Terminal(
+            sessionController = sessionController,
+            onSessionFinished = {
+                navController.navigateUp()
+            }
+        )
+    }
 }

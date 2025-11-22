@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.twotone.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.twotone.KeyboardArrowRight
 import androidx.compose.material.icons.twotone.KeyboardArrowDown
 import androidx.compose.material.icons.twotone.KeyboardArrowLeft
 import androidx.compose.material.icons.twotone.KeyboardArrowRight
@@ -85,7 +87,9 @@ fun ShortcutKey(
                             )
                         ) else Modifier
                     ),
-                content = { Text("Ctrl") },
+                content = {
+                    Text("Ctrl")
+                },
                 onClick = {
                     shortcutKeyController.pressedCtrlKey = !shortcutKeyController.pressedCtrlKey
                 })
@@ -106,7 +110,12 @@ fun ShortcutKey(
                 })
             ShortcutKeyItem(
                 modifier = Modifier.weight(1f),
-                content = { Icon(Icons.TwoTone.KeyboardArrowLeft, contentDescription = null) },
+                content = {
+                    Icon(
+                        Icons.AutoMirrored.TwoTone.KeyboardArrowLeft,
+                        contentDescription = null
+                    )
+                },
                 onClick = {
                     onPressKey(KeyEvent.KEYCODE_DPAD_LEFT)
                 })
@@ -118,7 +127,12 @@ fun ShortcutKey(
                 })
             ShortcutKeyItem(
                 modifier = Modifier.weight(1f),
-                content = { Icon(Icons.TwoTone.KeyboardArrowRight, contentDescription = null) },
+                content = {
+                    Icon(
+                        Icons.AutoMirrored.TwoTone.KeyboardArrowRight,
+                        contentDescription = null
+                    )
+                },
                 onClick = {
                     onPressKey(KeyEvent.KEYCODE_DPAD_RIGHT)
                 })

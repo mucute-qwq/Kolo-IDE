@@ -7,17 +7,16 @@ plugins {
 
 android {
     namespace = "io.github.mucute.qwq.koloide.shared"
-
-    defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
+    api(platform(libs.editor.bom))
+    api(libs.editor)
+    api(libs.editor.lsp)
+    api(libs.oniguruma.native)
+    api(libs.language.monarch)
+    api(libs.monarch.code)
+    api(libs.monarch.language.pack)
     api(libs.compose.preference)
     api(libs.androidx.core.ktx)
     api(libs.androidx.lifecycle.runtime.ktx)

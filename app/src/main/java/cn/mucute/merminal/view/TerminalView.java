@@ -25,13 +25,13 @@ import android.widget.Scroller;
 
 import androidx.annotation.NonNull;
 
-import io.github.mucute.qwq.koloide.R;
 import cn.mucute.merminal.core.EmulatorDebug;
 import cn.mucute.merminal.core.GestureAndScaleRecognizer;
 import cn.mucute.merminal.core.KeyHandler;
 import cn.mucute.merminal.core.TerminalBuffer;
 import cn.mucute.merminal.core.TerminalEmulator;
 import cn.mucute.merminal.core.TerminalSession;
+import io.github.mucute.qwq.koloide.R;
 
 
 /**
@@ -282,7 +282,7 @@ public final class TerminalView extends View {
       }
     });
     mScroller = new Scroller(context);
-    setTextSize(30);
+    setTextSize(38);
     AccessibilityManager am = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
     mAccessibilityEnabled = am != null && am.isEnabled();
   }

@@ -224,4 +224,3 @@ Java_cn_mucute_merminal_core_JNI_close(JNIEnv *TERMUX_UNUSED(env), jclass TERMUX
                                        jint fileDescriptor) {
     close(fileDescriptor);
 }
-

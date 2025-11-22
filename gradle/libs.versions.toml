@@ -1,5 +1,6 @@
 [versions]
 agp = "8.13.1"
+desugar_jdk_libs = "2.1.5"
 editorBom = "0.24.0"
 kotlin = "2.2.21"
 coreKtx = "1.17.0"
@@ -18,9 +19,14 @@ monarch-language-pack = "1.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-editor = { module = "io.github.rosemoe:editor" }
-editor-bom = { module = "io.github.rosemoe:editor-bom", version.ref = "editorBom" }
-editor-lsp = { module = "io.github.rosemoe:editor-lsp" }
+desugar_jdk_libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+editor = { group = "io.github.rosemoe", name = "editor" }
+editor-bom = { group = "io.github.rosemoe", name = "editor-bom", version.ref = "editorBom" }
+editor-lsp = { group = "io.github.rosemoe", name = "editor-lsp" }
+oniguruma-native = { group = "io.github.rosemoe", name = "oniguruma-native" }
+language-monarch = { module = "io.github.rosemoe:language-monarch" }
+monarch-code = { group = "io.github.dingyi222666.monarch", name = "monarch", version.ref = "monarch-code" }
+monarch-language-pack = { group = "io.github.dingyi222666.monarch", name = "monarch-language-pack", version.ref = "monarch-language-pack" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -38,9 +44,6 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIconsExtended" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 compose-preference = { group = "me.zhanghai.compose.preference", name = "preference", version.ref = "composePreference" }
-language-monarch = { module = "io.github.rosemoe:language-monarch" }
-monarch-code = { module = "io.github.dingyi222666.monarch:monarch", version.ref = "monarch-code" }
-monarch-language-pack = { module = "io.github.dingyi222666.monarch:monarch-language-pack", version.ref = "monarch-language-pack" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
