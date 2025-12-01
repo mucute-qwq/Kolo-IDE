@@ -1,6 +1,6 @@
 package io.github.mucute.qwq.koloide.manager
 
-import io.github.mucute.qwq.koloide.module.deno.DenoModule
+import io.github.mucute.qwq.koloide.module.nodejs.NodeJSModule
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -16,7 +16,7 @@ object ModuleManager {
 
     private val _modules = MutableStateFlow(
         listOf(
-            DenoModule
+            NodeJSModule
         )
     )
 

@@ -27,7 +27,7 @@
             <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/build-logic/convention" />
             <option value="$PROJECT_DIR$/module" />
-            <option value="$PROJECT_DIR$/module-deno" />
+            <option value="$PROJECT_DIR$/module-nodejs" />
             <option value="$PROJECT_DIR$/shared" />
           </set>
         </option>

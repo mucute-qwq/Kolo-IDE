@@ -14,6 +14,8 @@ abstract class Module(
     val subtitleResId: Int,
 ) {
 
+    abstract val name: String
+
     @Composable
     open fun newProjectIcon(): Painter {
         return rememberVectorPainter(Icons.TwoTone.Code)

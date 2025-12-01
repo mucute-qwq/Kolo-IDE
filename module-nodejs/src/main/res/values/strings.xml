@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="module_title">NodeJS Module</string>
+    <string name="module_subtitle">A free, open-source, cross-platform JavaScript runtime environment that lets developers create servers, web apps, command line tools and scripts.</string>
+</resources>

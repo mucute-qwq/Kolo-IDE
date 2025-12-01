@@ -1,8 +1,9 @@
 package io.github.mucute.qwq.koloide.application
 
 import android.app.Application
+import android.util.Log
 import io.github.dingyi222666.monarch.languages.JavascriptLanguage
-import io.github.mucute.qwq.koloide.module.util.extractBinaries
+import io.github.mucute.qwq.koloide.module.util.extractBinariesFlow
 import io.github.rosemoe.sora.langs.monarch.registry.FileProviderRegistry
 import io.github.rosemoe.sora.langs.monarch.registry.MonarchGrammarRegistry
 import io.github.rosemoe.sora.langs.monarch.registry.ThemeRegistry
@@ -14,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class AppContext : Application() {
@@ -45,7 +47,8 @@ class AppContext : Application() {
 
         filesDir.resolve("home").mkdirs()
         appScope.launch(Dispatchers.IO) {
-            extractBinaries(assets.open("bootstrap/merminal-bootstrap.tgz"))
+            extractBinariesFlow(this@AppContext, assets.open("bootstrap/merminal-bootstrap.tgz"))
+                .collect()
         }
     }
 

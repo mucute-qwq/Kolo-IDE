@@ -1,14 +1,16 @@
-package io.github.mucute.qwq.koloide.module.deno
+package io.github.mucute.qwq.koloide.module.nodejs
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import io.github.mucute.qwq.koloide.module.Module
 
-object DenoModule : Module(
+object NodeJSModule : Module(
     titleResId = R.string.module_title,
     subtitleResId = R.string.module_subtitle
 ) {
+
+    override val name = "NodeJS"
 
     @Composable
     override fun newProjectIcon(): Painter {

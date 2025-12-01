@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="module_title">Deno Module</string>
-    <string name="module_subtitle">Deno is an open-source runtime for TypeScript and JavaScript. It features built-in development tools, a powerful platform API, and native support for TypeScript and JSX.</string>
-</resources>
