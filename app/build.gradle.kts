@@ -34,6 +34,6 @@ android {
 dependencies {
     implementation(project(":shared"))
     implementation(project(":module"))
-    implementation(project(":module-nodejs"))
+    implementation(project(":module-deno"))
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 }

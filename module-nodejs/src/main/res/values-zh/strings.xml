@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="module_title">NodeJS 模块</string>
-    <string name="module_subtitle">提供 NodeJS 运行、调试、项目支持</string>
-</resources>

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import io.github.mucute.qwq.koloide.R
+import io.github.mucute.qwq.koloide.application.AppContext
 import io.github.mucute.qwq.koloide.lsp.ProcessStreamConnectionProvider
 import io.github.mucute.qwq.koloide.shared.activity.BaseActivity
 import io.github.rosemoe.sora.langs.monarch.MonarchColorScheme
@@ -32,7 +33,28 @@ class LspTestActivity : BaseActivity() {
         val codeEditor = findViewById<CodeEditor>(R.id.codeEditor)
         setupCodeEditor(codeEditor)
         createTestFiles()
-        connectToLsp(codeEditor)
+        //connectToLsp(codeEditor)
+
+        val processBuilder = ProcessBuilder("/system/bin/sh")
+            .apply {
+                val env = environment()
+                env["LD_PRELOAD"] = AppContext.instance.filesDir.resolve("usr/lib/libtermux-exec-ld-preload.so").absolutePath
+            }
+            .redirectErrorStream(true)
+            .redirectOutput(filesDir.resolve("home/log.txt"))
+
+        val process = processBuilder.start()
+
+        val stdin = process.outputStream
+
+        stdin.write($$"export PATH=$${System.getenv("PATH")}:$${AppContext.instance.filesDir.resolve("usr/bin")}\n".toByteArray())
+        stdin.flush()
+
+        stdin.write("export LD_LIBRARY_PATH=${filesDir.resolve("usr/lib")}\n".toByteArray())
+        stdin.flush()
+
+        stdin.write("${filesDir.resolve("home/a.js")}\n".toByteArray())
+        stdin.flush()
 
     }
 

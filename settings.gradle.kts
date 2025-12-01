@@ -1,6 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":module-nodejs")
+include(":module-deno")
 
 
 

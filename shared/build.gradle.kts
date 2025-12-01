@@ -10,6 +10,7 @@ android {
 }
 
 dependencies {
+    api(libs.commons.compress)
     api(platform(libs.editor.bom))
     api(libs.editor)
     api(libs.editor.lsp)
@@ -18,7 +19,6 @@ dependencies {
     api(libs.monarch.code)
     api(libs.monarch.language.pack)
     api(libs.lsp4j)
-    api("com.github.topjohnwu.libsu:core:6.0.0")
     api(libs.compose.preference)
     api(libs.androidx.core.ktx)
     api(libs.androidx.lifecycle.runtime.ktx)

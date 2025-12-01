@@ -59,6 +59,7 @@ fun Project.configureBaseExtension() {
         compileOptions {
             sourceCompatibility = Versions.javaVersion
             targetCompatibility = Versions.javaVersion
+
         }
     }
 }
@@ -66,6 +67,13 @@ fun Project.configureBaseExtension() {
 fun Project.configureKotlinExtension() {
     extensions.findByType(KotlinAndroidProjectExtension::class)?.run {
         jvmToolchain(Versions.jvmToolchain)
+        compilerOptions {
+            freeCompilerArgs.addAll(
+                listOf(
+                    "-Xcontext-parameters"
+                )
+            )
+        }
     }
 }
 

@@ -2,6 +2,7 @@ package io.github.mucute.qwq.koloide.application
 
 import android.app.Application
 import io.github.dingyi222666.monarch.languages.JavascriptLanguage
+import io.github.mucute.qwq.koloide.module.util.extractBinaries
 import io.github.rosemoe.sora.langs.monarch.registry.FileProviderRegistry
 import io.github.rosemoe.sora.langs.monarch.registry.MonarchGrammarRegistry
 import io.github.rosemoe.sora.langs.monarch.registry.ThemeRegistry
@@ -10,8 +11,10 @@ import io.github.rosemoe.sora.langs.monarch.registry.model.ThemeModel
 import io.github.rosemoe.sora.langs.monarch.registry.model.ThemeSource
 import io.github.rosemoe.sora.langs.monarch.registry.provider.AssetsFileResolver
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class AppContext : Application() {
 
@@ -39,6 +42,11 @@ class AppContext : Application() {
                 languageConfiguration = "textmate/javascript/language-configuration.json"
             }
         })
+
+        filesDir.resolve("home").mkdirs()
+        appScope.launch(Dispatchers.IO) {
+            extractBinaries(assets.open("bootstrap/merminal-bootstrap.tgz"))
+        }
     }
 
     override fun onTerminate() {

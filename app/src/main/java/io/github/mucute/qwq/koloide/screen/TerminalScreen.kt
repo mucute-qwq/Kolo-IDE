@@ -12,11 +12,12 @@ fun TerminalScreen() {
     val context = LocalContext.current
     val navController = LocalNavController.current
     val sessionController = rememberSessionController(
-        currentWorkingDirectory = context.filesDir.absolutePath,
-        environment = cn.mucute.merminal.composable.systemEnvironment().apply {
-            put("HOME", context.filesDir.absolutePath)
-            put("PATH", "${System.getenv("PATH")}:${context.filesDir.resolve("usr/bin")}")
-        },
+        currentWorkingDirectory = context.filesDir.resolve("home").absolutePath,
+        environment = mutableMapOf(
+            "HOME" to "${context.filesDir.resolve("home")}",
+            "PATH" to "${System.getenv("PATH")}:${context.filesDir.resolve("usr/bin")}",
+            "LD_PRELOAD" to "${context.filesDir.resolve("usr/lib/libtermux-exec-ld-preload.so")}"
+        ),
         command = null
     )
     Surface {
