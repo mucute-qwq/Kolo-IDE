@@ -36,7 +36,8 @@ fun ShortcutKey(
     modifier: Modifier = Modifier,
     shortcutKeyController: ShortcutKeyController,
     onWriteSymbol: (String) -> Unit,
-    onPressKey: (Int) -> Unit
+    onPressKey: (Int) -> Unit,
+    onKill: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     Column(modifier = modifier) {
@@ -51,11 +52,7 @@ fun ShortcutKey(
                 modifier = Modifier.weight(1f),
                 content = { Text("Kill") },
                 onClick = {
-//                    shortcutKeyController.pressedCtrlKey = true
-//                    scope.launch {
-//                        onWriteSymbol("c")
-//                    }
-////                    shortcutKeyController.pressedCtrlKey = false
+                    onKill()
                 })
             ShortcutKeyItem(
                 modifier = Modifier.weight(1f),

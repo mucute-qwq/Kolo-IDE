@@ -27,7 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.mucute.qwq.koloide.activity.LspTestActivity
 import io.github.mucute.qwq.koloide.component.SelectableCard
 import io.github.mucute.qwq.koloide.component.SelectableCardDropDownMenu
-import io.github.mucute.qwq.koloide.navigation.LocalNavController
+import io.github.mucute.qwq.koloide.composition.provider.LocalNavController
 import io.github.mucute.qwq.koloide.navigation.NavScreen
 import io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel
 

@@ -57,6 +57,9 @@ fun Terminal(
             onWriteSymbol = {
                 session.write(it)
             },
+            onKill = {
+                terminalView.currentSession.finishIfRunning()
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()

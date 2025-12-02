@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import io.github.mucute.qwq.koloide.composition.provider.LocalNavController
 import io.github.mucute.qwq.koloide.screen.MainScreen
 import io.github.mucute.qwq.koloide.screen.NewProjectScreen
 import io.github.mucute.qwq.koloide.screen.TerminalScreen
@@ -52,12 +53,4 @@ sealed interface NavScreen {
     @Serializable
     object Terminal : NavScreen
 
-}
-
-val LocalNavController =
-    compositionLocalOf<NavController> { noLocalProvidedFor("LocalNavController") }
-
-@Suppress("SameParameterValue")
-private fun noLocalProvidedFor(name: String): Nothing {
-    error("CompositionLocal $name not present")
 }

@@ -23,9 +23,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.mucute.qwq.koloide.R
 import io.github.mucute.qwq.koloide.component.GalleryCard
 import io.github.mucute.qwq.koloide.component.LoadingContent
+import io.github.mucute.qwq.koloide.composition.provider.LocalNavController
 import io.github.mucute.qwq.koloide.manager.ModuleManager
 import io.github.mucute.qwq.koloide.module.Module
-import io.github.mucute.qwq.koloide.navigation.LocalNavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

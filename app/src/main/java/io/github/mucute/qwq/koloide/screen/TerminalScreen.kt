@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import cn.mucute.merminal.composable.Terminal
 import cn.mucute.merminal.composable.rememberSessionController
-import io.github.mucute.qwq.koloide.navigation.LocalNavController
+import io.github.mucute.qwq.koloide.composition.provider.LocalNavController
 
 @Composable
 fun TerminalScreen() {

@@ -90,7 +90,11 @@ class TermViewClient(
     }
 
     override fun readControlKey(): Boolean {
-        return shortcutKeyController.pressedCtrlKey
+        val pressedCtrlKey = shortcutKeyController.pressedCtrlKey
+        if (pressedCtrlKey) {
+            shortcutKeyController.pressedCtrlKey = false
+        }
+        return pressedCtrlKey
     }
 
     override fun readAltKey(): Boolean {

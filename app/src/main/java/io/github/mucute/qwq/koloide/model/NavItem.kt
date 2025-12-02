@@ -8,5 +8,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 data class NavItem(
     val icon: ImageVector,
     val labelResId: Int,
-    val content: @Composable () -> Unit
+    val content: @Composable () -> Unit,
+    val floatingActionButton: @Composable () -> Unit = {}
 )

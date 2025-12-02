@@ -15,6 +15,7 @@ import io.github.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem
 import io.github.mucute.qwq.koloide.page.main.DocumentPage
 import io.github.mucute.qwq.koloide.page.main.ModulePage
 import io.github.mucute.qwq.koloide.page.main.HomePage
+import io.github.mucute.qwq.koloide.page.main.ModulePageFloatingActionButton
 import io.github.mucute.qwq.koloide.page.main.SettingPage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,12 +28,13 @@ class MainScreenViewModel : ViewModel() {
         NavItem(
             icon = Icons.TwoTone.Home,
             labelResId = R.string.home,
-            content = { HomePage() }
+            content = { HomePage() },
         ),
         NavItem(
             icon = Icons.TwoTone.Token,
             labelResId = R.string.module,
-            content = { ModulePage() }
+            content = { ModulePage() },
+            floatingActionButton = { ModulePageFloatingActionButton() }
         ),
         NavItem(
             icon = Icons.TwoTone.Book,
@@ -64,7 +66,7 @@ class MainScreenViewModel : ViewModel() {
         )
     )
 
-    private val _selectedNavItem = MutableStateFlow(navItems.first())
+    private val _selectedNavItem = MutableStateFlow(navItems[1])
 
     val selectedNavItem = _selectedNavItem.asStateFlow()
 

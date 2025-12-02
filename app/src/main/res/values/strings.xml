@@ -29,4 +29,7 @@
     <string name="copy_text">Copy</string>
     <string name="paste_text">Paste</string>
     <string name="text_selection_more">More</string>
+    <string name="cancel">Cancel</string>
+    <string name="file_selector">File Selector</string>
+    <string name="only_tgz_files_can_be_imported">Only .tgz files can be imported.</string>
 </resources>

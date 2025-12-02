@@ -13,7 +13,7 @@ import io.github.mucute.qwq.koloide.component.dividerPreference
 import io.github.mucute.qwq.koloide.component.headerPreference
 import io.github.mucute.qwq.koloide.preference.Preference
 import io.github.mucute.qwq.koloide.R
-import io.github.mucute.qwq.koloide.navigation.LocalNavController
+import io.github.mucute.qwq.koloide.composition.provider.LocalNavController
 import io.github.mucute.qwq.koloide.navigation.NavScreen
 import me.zhanghai.compose.preference.preference
 
