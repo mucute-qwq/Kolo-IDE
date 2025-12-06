@@ -13,10 +13,17 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
+import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.InputStream
+import kotlin.math.ceil
+import kotlin.math.floor
 import kotlin.math.max
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 sealed class ExtractState {
 
@@ -29,35 +36,42 @@ sealed class ExtractState {
 
 }
 
+@OptIn(ExperimentalUuidApi::class)
 fun CoroutineScope.extractBinariesFlow(
     context: Context,
+    controlName: String,
     inputStream: InputStream
 ): StateFlow<ExtractState> {
-
+    val tempFile = File.createTempFile(Uuid.random().toHexString(), null)
     return flow<ExtractState> {
+        val totalCount = tempFile.outputStream().use {
+            inputStream.transferToCompat(it)
+        }.toFloat()
 
-        inputStream.mark(Int.MAX_VALUE)
-        val totalCount = File("/dev/null").outputStream().use { outputStream ->
-            inputStream.transferToCompat(outputStream)
-        }
-        inputStream.reset()
-
+        val controlFolder = File(context.filesDir, "control")
+        val controlFile = File(controlFolder, "${controlName}.mappings")
         val baseFolder = File(context.filesDir, "usr")
-        val gzipCompressorInputStream = GzipCompressorInputStream(inputStream)
+        val gzipCompressorInputStream = GzipCompressorInputStream(tempFile.inputStream())
+        controlFile.delete()
+        controlFile.createNewFile()
+
         TarArchiveInputStream(gzipCompressorInputStream).use { tarArchiveInputStream ->
             var tarArchiveEntry: TarArchiveEntry?
             var readCount = 0f
             while (tarArchiveInputStream.nextEntry.also { nextEntry ->
                     tarArchiveEntry = nextEntry
                 } != null) {
+
                 val targetFile = File(baseFolder, tarArchiveEntry!!.name)
                     .normalize()
                     .also { targetFile -> targetFile.delete() }
 
+                controlFile.appendText("${targetFile.absolutePath}\n")
+
                 emit(
                     ExtractState.Processing(
                         tarArchiveEntry.name,
-                        readCount / totalCount
+                        floor(readCount / totalCount)
                     )
                 )
 
@@ -84,7 +98,7 @@ fun CoroutineScope.extractBinariesFlow(
                 }
 
                 if (tarArchiveEntry.isDirectory) {
-                    File(baseFolder, tarArchiveEntry.name).mkdirs()
+                    targetFile.mkdirs()
                     continue
                 }
 
@@ -99,6 +113,7 @@ fun CoroutineScope.extractBinariesFlow(
         }
     }
         .onCompletion {
+            tempFile.delete()
             emit(ExtractState.Idle)
         }
         .flowOn(Dispatchers.IO)

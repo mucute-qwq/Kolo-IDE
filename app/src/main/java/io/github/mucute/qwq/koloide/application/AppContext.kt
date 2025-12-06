@@ -45,9 +45,11 @@ class AppContext : Application() {
             }
         })
 
+        filesDir.resolve("control").mkdirs()
         filesDir.resolve("home").mkdirs()
+
         appScope.launch(Dispatchers.IO) {
-            extractBinariesFlow(this@AppContext, assets.open("bootstrap/merminal-bootstrap.tgz"))
+            extractBinariesFlow(this@AppContext, "merminal-bootstrap", assets.open("bootstrap/merminal-bootstrap.tgz"))
                 .collect()
         }
     }

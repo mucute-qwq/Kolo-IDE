@@ -1,17 +1,30 @@
 package io.github.mucute.qwq.koloide.page.main
 
 import android.util.Log
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.ImportExport
+import androidx.compose.material3.AlertDialogDefaults
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,13 +47,18 @@ import io.github.mucute.qwq.koloide.composition.provider.LocalSnackbarHostState
 import io.github.mucute.qwq.koloide.manager.ModuleManager
 import io.github.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem
 import io.github.mucute.qwq.koloide.module.Module
+import io.github.mucute.qwq.koloide.module.util.ExtractState
+import io.github.mucute.qwq.koloide.module.util.extractBinariesFlow
 import io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @Composable
 fun ModulePage() {
     val moduleState by ModuleManager.state.collectAsStateWithLifecycle()
-    val modules by ModuleManager.modules.collectAsStateWithLifecycle()
+    val modules by ModuleManager.modules
+        .map { it.filter { module -> module.isUsable } }
+        .collectAsStateWithLifecycle(emptyList())
     val viewModel: MainScreenViewModel = viewModel()
     val moduleCardDropDownMenuItems = viewModel.moduleCardDropDownMenuItems
     LoadingContent(
@@ -110,12 +128,45 @@ private fun ModuleItems(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModulePageFloatingActionButton() {
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = LocalSnackbarHostState.current
     val context = LocalContext.current
     var isFileSelectorDialogShown by remember { mutableStateOf(false) }
+    var extractState: ExtractState by remember { mutableStateOf(ExtractState.Idle) }
+
+    if (extractState is ExtractState.Processing) {
+        val processingState = extractState as ExtractState.Processing
+        BasicAlertDialog(
+            onDismissRequest = {}
+        ) {
+            Surface(
+                shape = MaterialTheme.shapes.large,
+                tonalElevation = AlertDialogDefaults.TonalElevation,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CircularProgressIndicator(
+                        progress = {
+                            processingState.progress
+                        },
+                    )
+                    Spacer(Modifier.width(16.dp))
+                    Text(
+                        "Extracting: ${processingState.name}",
+                        modifier = Modifier
+                            .animateContentSize()
+                    )
+                }
+            }
+        }
+    }
 
     FloatingActionButton(
         onClick = {
@@ -140,6 +191,13 @@ fun ModulePageFloatingActionButton() {
                         )
                     }
                     return@FileSelectorDialog
+                }
+
+                coroutineScope.launch {
+                    extractBinariesFlow(context, it.nameWithoutExtension, it.inputStream())
+                        .collect { state ->
+                            extractState = state
+                        }
                 }
             }
         )
