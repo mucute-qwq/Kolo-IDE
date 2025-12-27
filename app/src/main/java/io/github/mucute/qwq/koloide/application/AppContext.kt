@@ -1,8 +1,11 @@
 package io.github.mucute.qwq.koloide.application
 
+import android.app.Activity
 import android.app.Application
-import android.util.Log
+import android.os.Bundle
 import io.github.dingyi222666.monarch.languages.JavascriptLanguage
+import io.github.mucute.qwq.koloide.manager.ModuleManager
+import io.github.mucute.qwq.koloide.module.util.extractBinaries
 import io.github.mucute.qwq.koloide.module.util.extractBinariesFlow
 import io.github.rosemoe.sora.langs.monarch.registry.FileProviderRegistry
 import io.github.rosemoe.sora.langs.monarch.registry.MonarchGrammarRegistry
@@ -18,7 +21,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class AppContext : Application() {
+class AppContext : Application(), Application.ActivityLifecycleCallbacks {
 
     companion object {
 
@@ -47,16 +50,53 @@ class AppContext : Application() {
 
         filesDir.resolve("control").mkdirs()
         filesDir.resolve("home").mkdirs()
+        filesDir.resolve("module").mkdirs()
 
         appScope.launch(Dispatchers.IO) {
-            extractBinariesFlow(this@AppContext, "merminal-bootstrap", assets.open("bootstrap/merminal-bootstrap.tgz"))
-                .collect()
+            extractBinaries(this@AppContext, assets.open("bootstrap/merminal-bootstrap.tar"))
         }
+
+        registerActivityLifecycleCallbacks(this)
     }
 
     override fun onTerminate() {
         super.onTerminate()
         appScope.cancel()
+        unregisterActivityLifecycleCallbacks(this)
+    }
+
+    override fun onActivityCreated(
+        activity: Activity,
+        savedInstanceState: Bundle?
+    ) {
+
+    }
+
+    override fun onActivityDestroyed(activity: Activity) {
+
+    }
+
+    override fun onActivityPaused(activity: Activity) {
+
+    }
+
+    override fun onActivityResumed(activity: Activity) {
+        ModuleManager.refresh()
+    }
+
+    override fun onActivitySaveInstanceState(
+        activity: Activity,
+        outState: Bundle
+    ) {
+
+    }
+
+    override fun onActivityStarted(activity: Activity) {
+
+    }
+
+    override fun onActivityStopped(activity: Activity) {
+
     }
 
 }

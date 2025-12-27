@@ -1,5 +1,6 @@
 package io.github.mucute.qwq.koloide.page.main
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
@@ -10,9 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.ImportExport
@@ -50,22 +48,23 @@ import io.github.mucute.qwq.koloide.module.Module
 import io.github.mucute.qwq.koloide.module.util.ExtractState
 import io.github.mucute.qwq.koloide.module.util.extractBinariesFlow
 import io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @Composable
 fun ModulePage() {
     val moduleState by ModuleManager.state.collectAsStateWithLifecycle()
-    val modules by ModuleManager.modules
-        .map { it.filter { module -> module.isUsable } }
-        .collectAsStateWithLifecycle(emptyList())
+    val usableModules by ModuleManager.usableModules.collectAsStateWithLifecycle()
+
     val viewModel: MainScreenViewModel = viewModel()
     val moduleCardDropDownMenuItems = viewModel.moduleCardDropDownMenuItems
     LoadingContent(
         isLoading = moduleState === ModuleManager.State.Processing
     ) {
         ModuleItems(
-            modules,
+            usableModules,
             moduleCardDropDownMenuItems
         )
     }
@@ -73,23 +72,23 @@ fun ModulePage() {
 
 @Composable
 private fun ModuleItems(
-    modules: List<Module>,
+    usableModules: List<Module>,
     moduleCardDropDownMenuItems: List<SelectableCardDropDownMenuItem>
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(modules.size) { index ->
-            val module = modules[index]
+        items(usableModules.size) { index ->
+            val usableModule = usableModules[index]
             Column(
                 Modifier
                     .fillMaxWidth()
             ) {
                 var showModuleDropdownMenu by remember { mutableStateOf(false) }
                 SelectableCard(
-                    painter = module.icon(),
-                    title = stringResource(module.titleResId),
-                    subtitle = stringResource(module.subtitleResId),
+                    painter = usableModule.icon(),
+                    title = stringResource(usableModule.titleResId),
+                    subtitle = stringResource(usableModule.subtitleResId),
                     modifier = Modifier
                         .padding(horizontal = 16.dp),
                     onLongClick = {
@@ -128,6 +127,7 @@ private fun ModuleItems(
     }
 }
 
+@SuppressLint("LocalContextGetResourceValueCall")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModulePageFloatingActionButton() {
@@ -159,7 +159,7 @@ fun ModulePageFloatingActionButton() {
                     )
                     Spacer(Modifier.width(16.dp))
                     Text(
-                        "Extracting: ${processingState.name}",
+                        stringResource(R.string.extracting, processingState.name),
                         modifier = Modifier
                             .animateContentSize()
                     )
@@ -183,21 +183,25 @@ fun ModulePageFloatingActionButton() {
             },
             selectFile = {
                 isFileSelectorDialogShown = false
-                if (it.extension != "tgz") {
+                if (it.extension != "tar") {
                     coroutineScope.launch {
                         snackbarHostState.currentSnackbarData?.dismiss()
                         snackbarHostState.showSnackbar(
-                            message = context.getString(R.string.only_tgz_files_can_be_imported)
+                            message = context.getString(R.string.only_tar_files_can_be_imported)
                         )
                     }
                     return@FileSelectorDialog
                 }
 
                 coroutineScope.launch {
-                    extractBinariesFlow(context, it.nameWithoutExtension, it.inputStream())
-                        .collect { state ->
+                    extractBinariesFlow(context, it.inputStream())
+                        .onEach { state ->
                             extractState = state
                         }
+                        .onCompletion {
+                            ModuleManager.refresh()
+                        }
+                        .collect()
                 }
             }
         )

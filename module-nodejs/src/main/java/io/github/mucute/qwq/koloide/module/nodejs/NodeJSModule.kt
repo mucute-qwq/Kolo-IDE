@@ -11,7 +11,7 @@ class NodeJSModule(application: Application) : Module(
     titleResId = R.string.module_title,
     subtitleResId = R.string.module_subtitle
 ) {
-    override val controlName = "nodejs"
+    override val module = "nodejs"
 
     @Composable
     override fun newProjectIcon(): Painter {

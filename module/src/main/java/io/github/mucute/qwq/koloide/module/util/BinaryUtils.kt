@@ -3,25 +3,20 @@ package io.github.mucute.qwq.koloide.module.util
 import android.content.Context
 import android.system.Os
 import io.github.mucute.qwq.koloide.shared.util.transferToCompat
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
-import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.InputStream
-import kotlin.math.ceil
-import kotlin.math.floor
-import kotlin.math.max
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -36,17 +31,66 @@ sealed class ExtractState {
 
 }
 
-@OptIn(ExperimentalUuidApi::class)
-fun CoroutineScope.extractBinariesFlow(
+suspend fun extractBinaries(
     context: Context,
-    controlName: String,
     inputStream: InputStream
-): StateFlow<ExtractState> {
+) {
+    extractBinariesFlow(context, inputStream).collect()
+}
+
+@OptIn(ExperimentalUuidApi::class)
+fun extractBinariesFlow(
+    context: Context,
+    inputStream: InputStream
+): Flow<ExtractState> {
     val tempFile = File.createTempFile(Uuid.random().toHexString(), null)
     return flow<ExtractState> {
-        val totalCount = tempFile.outputStream().use {
-            inputStream.transferToCompat(it)
-        }.toFloat()
+
+        val moduleFolder = File(context.filesDir, "module")
+        var controlName = ""
+
+        TarArchiveInputStream(inputStream).use { tarArchiveInputStream ->
+            var tarArchiveEntry: TarArchiveEntry?
+            while (tarArchiveInputStream.nextEntry.also { nextEntry ->
+                    tarArchiveEntry = nextEntry
+                } != null) {
+
+                emit(
+                    ExtractState.Processing(
+                        tarArchiveEntry!!.name,
+                        0f
+                    )
+                )
+
+                if (tarArchiveEntry.name.endsWith("module-info.json")) {
+                    File(moduleFolder, tarArchiveEntry.name)
+                        .normalize()
+                        .outputStream().use {
+                            tarArchiveInputStream.transferToCompat(it)
+                        }
+
+                    controlName = Json.parseToJsonElement(
+                        File(moduleFolder, tarArchiveEntry.name)
+                            .normalize()
+                            .readText()
+                    ).jsonObject["module"]!!.jsonPrimitive.content
+                    continue
+                }
+
+                tempFile.outputStream().use {
+                    tarArchiveInputStream.transferToCompat(it)
+                }
+
+            }
+        }
+
+        var fileCount = 0L
+
+        TarArchiveInputStream(GzipCompressorInputStream(tempFile.inputStream())).use { tarArchiveInputStream ->
+            while (tarArchiveInputStream.nextEntry != null) {
+                fileCount++
+            }
+        }
 
         val controlFolder = File(context.filesDir, "control")
         val controlFile = File(controlFolder, "${controlName}.mappings")
@@ -57,7 +101,7 @@ fun CoroutineScope.extractBinariesFlow(
 
         TarArchiveInputStream(gzipCompressorInputStream).use { tarArchiveInputStream ->
             var tarArchiveEntry: TarArchiveEntry?
-            var readCount = 0f
+            var handledCount = 0f
             while (tarArchiveInputStream.nextEntry.also { nextEntry ->
                     tarArchiveEntry = nextEntry
                 } != null) {
@@ -71,7 +115,7 @@ fun CoroutineScope.extractBinariesFlow(
                 emit(
                     ExtractState.Processing(
                         tarArchiveEntry.name,
-                        floor(readCount / totalCount)
+                        handledCount / fileCount
                     )
                 )
 
@@ -83,6 +127,8 @@ fun CoroutineScope.extractBinariesFlow(
                         sourceFile.absolutePath,
                         targetFile.absolutePath
                     )
+
+                    handledCount++
                     continue
                 }
 
@@ -94,11 +140,14 @@ fun CoroutineScope.extractBinariesFlow(
                         sourceFile.absolutePath,
                         targetFile.absolutePath
                     )
+
+                    handledCount++
                     continue
                 }
 
                 if (tarArchiveEntry.isDirectory) {
                     targetFile.mkdirs()
+                    handledCount++
                     continue
                 }
 
@@ -108,18 +157,11 @@ fun CoroutineScope.extractBinariesFlow(
                     }
                 targetFile.setExecutable(true)
 
-                readCount = max(readCount, gzipCompressorInputStream.compressedCount.toFloat())
+                handledCount++
             }
         }
-    }
-        .onCompletion {
-            tempFile.delete()
-            emit(ExtractState.Idle)
-        }
-        .flowOn(Dispatchers.IO)
-        .stateIn(
-            scope = this,
-            started = SharingStarted.WhileSubscribed(),
-            initialValue = ExtractState.Idle
-        )
+    }.onCompletion {
+        tempFile.delete()
+        emit(ExtractState.Idle)
+    }.flowOn(Dispatchers.IO)
 }

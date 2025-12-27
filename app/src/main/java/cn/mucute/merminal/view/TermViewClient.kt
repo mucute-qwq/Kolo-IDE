@@ -51,11 +51,7 @@ class TermViewClient(
 
         when (keyCode) {
             KeyEvent.KEYCODE_ENTER -> {
-                if (e?.action == KeyEvent.ACTION_DOWN && session?.isRunning == false) {
-
-                    return true
-                }
-                return false
+                return e?.action == KeyEvent.ACTION_DOWN && session?.isRunning == false
             }
 
         }
@@ -76,7 +72,7 @@ class TermViewClient(
             }
 
             // Use Alt + num to switch sessions
-            unicodeChar.toInt() - '0'.toInt()
+            unicodeChar.code - '0'.code
 
 
             // 当要触发 NeoTerm 快捷键时，屏蔽所有终端处理key
@@ -98,8 +94,11 @@ class TermViewClient(
     }
 
     override fun readAltKey(): Boolean {
-//    val extraKeysView = termSessionData?.extraKeysView
-        return shortcutKeyController.pressedAltKey
+        val pressedAltKey = shortcutKeyController.pressedAltKey
+        if (pressedAltKey) {
+            shortcutKeyController.pressedAltKey = false
+        }
+        return pressedAltKey
     }
 
     override fun onCodePoint(
@@ -126,15 +125,15 @@ class TermViewClient(
                 // Some special keys:
                 't' -> resultingKeyCode = KeyEvent.KEYCODE_TAB
                 'i' -> resultingKeyCode = KeyEvent.KEYCODE_INSERT
-                'h' -> resultingCodePoint = '~'.toInt()
+                'h' -> resultingCodePoint = '~'.code
 
                 // Special characters to input.
-                'u' -> resultingCodePoint = '_'.toInt()
-                'l' -> resultingCodePoint = '|'.toInt()
+                'u' -> resultingCodePoint = '_'.code
+                'l' -> resultingCodePoint = '|'.code
 
                 // Function keys.
                 '1', '2', '3', '4', '5', '6', '7', '8', '9' -> resultingKeyCode =
-                    codePoint - '1'.toInt() + KeyEvent.KEYCODE_F1
+                    codePoint - '1'.code + KeyEvent.KEYCODE_F1
 
                 '0' -> resultingKeyCode = KeyEvent.KEYCODE_F10
 
@@ -191,8 +190,6 @@ class TermViewClient(
         if (event == null) {
             return false
         }
-
-        val shellSession = termSession
 
         // Volume keys as special keys
         val volumeAsSpecialKeys = false

@@ -15,9 +15,12 @@ import androidx.compose.material.icons.twotone.KeyboardArrowLeft
 import androidx.compose.material.icons.twotone.KeyboardArrowRight
 import androidx.compose.material.icons.twotone.KeyboardArrowUp
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -76,14 +79,8 @@ fun ShortcutKey(
         Row {
             ShortcutKeyItem(
                 modifier = Modifier
-                    .weight(1f)
-                    .then(
-                        if (shortcutKeyController.pressedCtrlKey) Modifier.background(
-                            MaterialTheme.colorScheme.primary.copy(
-                                0.3f
-                            )
-                        ) else Modifier
-                    ),
+                    .weight(1f),
+                isPressed = shortcutKeyController.pressedCtrlKey,
                 content = {
                     Text("Ctrl")
                 },
@@ -93,14 +90,8 @@ fun ShortcutKey(
 
             ShortcutKeyItem(
                 modifier = Modifier
-                    .weight(1f)
-                    .then(
-                        if (shortcutKeyController.pressedAltKey) Modifier.background(
-                            MaterialTheme.colorScheme.primary.copy(
-                                0.3f
-                            )
-                        ) else Modifier
-                    ),
+                    .weight(1f),
+                isPressed = shortcutKeyController.pressedAltKey,
                 content = { Text("Alt") },
                 onClick = {
                     shortcutKeyController.pressedAltKey = !shortcutKeyController.pressedAltKey
@@ -149,15 +140,22 @@ fun ShortcutKey(
 fun ShortcutKeyItem(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
+    isPressed: Boolean = false,
     onClick: () -> Unit
 ) {
     Box(
         modifier
             .height(40.dp)
+            .then(if (isPressed) Modifier.background(MaterialTheme.colorScheme.primary) else Modifier)
             .clickable {
                 onClick()
-            }, contentAlignment = Alignment.Center
+            },
+        contentAlignment = Alignment.Center
     ) {
-        content()
+        val localContentColor =
+            if (isPressed) contentColorFor(MaterialTheme.colorScheme.primary) else LocalContentColor.current
+        CompositionLocalProvider(LocalContentColor provides localContentColor) {
+            content()
+        }
     }
 }

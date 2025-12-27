@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
-import java.io.File
 
 abstract class Module(
     val application: Application,
@@ -16,12 +15,12 @@ abstract class Module(
     val subtitleResId: Int,
 ) {
 
-    abstract val controlName: String
+    abstract val module: String
 
     val isUsable: Boolean
         get() {
-            val controlFile = application.filesDir.resolve("control").resolve(controlName)
-            return controlFile.exists() && controlFile.isFile
+            val moduleFile = application.filesDir.resolve("module").resolve("${module}-module-info.json")
+            return moduleFile.exists() && moduleFile.isFile
         }
 
     @Composable

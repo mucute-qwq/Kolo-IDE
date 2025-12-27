@@ -31,5 +31,6 @@
     <string name="text_selection_more">更多</string>
     <string name="cancel">取消</string>
     <string name="file_selector">文件选择器</string>
-    <string name="only_tgz_files_can_be_imported">只能导入 .tgz 文件。</string>
+    <string name="only_tar_files_can_be_imported">只能导入 .tar 文件。</string>
+    <string name="extracting">正在解压：%s</string>
 </resources>
