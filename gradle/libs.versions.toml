@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.1"
+agp = "8.13.2"
 commonsCompress = "1.28.0"
 desugar_jdk_libs = "2.1.5"
 editorBom = "0.24.2"
