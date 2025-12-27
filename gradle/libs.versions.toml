@@ -2,7 +2,7 @@
 agp = "8.13.1"
 commonsCompress = "1.28.0"
 desugar_jdk_libs = "2.1.5"
-editorBom = "0.24.2"
+editorBom = "0.24.3"
 kotlin = "2.3.0"
 coreKtx = "1.17.0"
 junit = "4.13.2"
