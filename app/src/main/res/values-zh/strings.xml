@@ -33,4 +33,5 @@
     <string name="file_selector">文件选择器</string>
     <string name="only_tar_files_can_be_imported">只能导入 .tar 文件。</string>
     <string name="extracting">正在解压：%s</string>
+    <string name="no_module_installed">未安装模块</string>
 </resources>

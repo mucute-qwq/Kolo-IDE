@@ -29,7 +29,8 @@ fun LoadingContent(
         } else {
             Box(
                 Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
                 content()
             }

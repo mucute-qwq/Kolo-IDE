@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -63,10 +64,14 @@ fun ModulePage() {
     LoadingContent(
         isLoading = moduleState === ModuleManager.State.Processing
     ) {
-        ModuleItems(
-            usableModules,
-            moduleCardDropDownMenuItems
-        )
+        if (usableModules.isEmpty()) {
+            Text(stringResource(R.string.no_module_installed))
+        } else {
+            ModuleItems(
+                usableModules,
+                moduleCardDropDownMenuItems
+            )
+        }
     }
 }
 
@@ -76,7 +81,9 @@ private fun ModuleItems(
     moduleCardDropDownMenuItems: List<SelectableCardDropDownMenuItem>
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
     ) {
         items(usableModules.size) { index ->
             val usableModule = usableModules[index]
@@ -115,7 +122,7 @@ private fun ModuleItems(
                                 ?: return@SelectableCardDropDownMenu
                             when (index) {
                                 0 -> {
-
+                                    ModuleManager.uninstall(usableModule)
                                 }
                             }
                             showModuleDropdownMenu = false
