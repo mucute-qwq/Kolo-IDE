@@ -7,7 +7,6 @@ import androidx.compose.ui.res.painterResource
 import io.github.mucute.qwq.koloide.module.Module
 
 class NodeJSModule(application: Application) : Module(
-    application = application,
     titleResId = R.string.module_title,
     subtitleResId = R.string.module_subtitle
 ) {

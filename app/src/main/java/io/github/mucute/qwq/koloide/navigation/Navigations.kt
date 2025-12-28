@@ -2,15 +2,16 @@ package io.github.mucute.qwq.koloide.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import io.github.mucute.qwq.koloide.composition.provider.LocalNavController
 import io.github.mucute.qwq.koloide.screen.MainScreen
+import io.github.mucute.qwq.koloide.screen.NewProjectOptionsScreen
 import io.github.mucute.qwq.koloide.screen.NewProjectScreen
 import io.github.mucute.qwq.koloide.screen.TerminalScreen
+import io.github.mucute.qwq.koloide.screen.WorkspaceScreen
 import kotlinx.serialization.Serializable
 import me.zhanghai.compose.preference.ProvidePreferenceLocals
 
@@ -32,6 +33,14 @@ fun Navigation() {
                     NewProjectScreen()
                 }
 
+                composable<NavScreen.NewProjectOptions> {
+                    NewProjectOptionsScreen(it.toRoute<NavScreen.NewProjectOptions>().module)
+                }
+
+                composable<NavScreen.Workspace> {
+                    WorkspaceScreen()
+                }
+
                 composable<NavScreen.Terminal> {
                     TerminalScreen()
                 }
@@ -49,6 +58,12 @@ sealed interface NavScreen {
 
     @Serializable
     object NewProject : NavScreen
+
+    @Serializable
+    data class NewProjectOptions(val module: String) : NavScreen
+
+    @Serializable
+    object Workspace : NavScreen
 
     @Serializable
     object Terminal : NavScreen

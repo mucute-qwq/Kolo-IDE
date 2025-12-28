@@ -26,9 +26,7 @@ fun GalleryCard(
             .aspectRatio(1f / 1f),
         shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.outlinedCardElevation(),
-        onClick = {
-
-        }
+        onClick = onClick
     ) {
         Box(
             Modifier

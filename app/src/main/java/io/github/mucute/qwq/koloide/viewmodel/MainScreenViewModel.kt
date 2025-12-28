@@ -66,7 +66,7 @@ class MainScreenViewModel : ViewModel() {
         )
     )
 
-    private val _selectedNavItem = MutableStateFlow(navItems[1])
+    private val _selectedNavItem = MutableStateFlow(navItems.first())
 
     val selectedNavItem = _selectedNavItem.asStateFlow()
 

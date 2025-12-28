@@ -102,7 +102,6 @@ object ModuleManager {
                         val jsonObject = Json.parseToJsonElement(child.readText()).jsonObject
                         val module = jsonObject["module"]!!.jsonPrimitive.content
                         val targetModule = modules.value.find { it.module == module } ?: continue
-                        Log.e("Module", targetModule.toString())
                         add(targetModule)
                     }
                 }

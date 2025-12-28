@@ -27,12 +27,13 @@ import io.github.mucute.qwq.koloide.component.LoadingContent
 import io.github.mucute.qwq.koloide.composition.provider.LocalNavController
 import io.github.mucute.qwq.koloide.manager.ModuleManager
 import io.github.mucute.qwq.koloide.module.Module
+import io.github.mucute.qwq.koloide.navigation.NavScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewProjectScreen() {
     val moduleState by ModuleManager.state.collectAsStateWithLifecycle()
-    val modules by ModuleManager.modules.collectAsStateWithLifecycle()
+    val usableModules by ModuleManager.usableModules.collectAsStateWithLifecycle()
 
     val navController = LocalNavController.current
     Scaffold(
@@ -57,7 +58,7 @@ fun NewProjectScreen() {
             LoadingContent(
                 isLoading = moduleState === ModuleManager.State.Processing
             ) {
-                NewProjectItems(modules)
+                NewProjectItems(usableModules)
             }
         }
     }
@@ -65,8 +66,9 @@ fun NewProjectScreen() {
 
 @Composable
 private fun NewProjectItems(
-    modules: List<Module>
+    usableModules: List<Module>
 ) {
+    val navController = LocalNavController.current
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -75,12 +77,12 @@ private fun NewProjectItems(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        items(modules.size) { index ->
-            val module = modules[index]
+        items(usableModules.size) { index ->
+            val usableModule = usableModules[index]
             GalleryCard(
-                painter = module.newProjectIcon(),
+                painter = usableModule.newProjectIcon(),
                 onClick = {
-
+                    navController.navigate(NavScreen.NewProjectOptions(usableModule.module))
                 }
             )
         }
