@@ -2,4 +2,20 @@
 <resources>
     <string name="module_title">NodeJS Module</string>
     <string name="module_subtitle">A free, open-source, cross-platform JavaScript runtime environment that lets developers create servers, web apps, command line tools and scripts.</string>
+    <string name="project_name">Project name</string>
+    <string name="project_version">Project version</string>
+    <string name="project_description">Project description</string>
+    <string name="project_template">Project template</string>
+    <string name="normal_template">Normal Template</string>
+    <string name="normal_template_description">Includes only package.json and main.js</string>
+    <string name="react_template">React Template</string>
+    <string name="react_template_description">The library for web and native user interfaces</string>
+    <string name="vue_template">Vue Template</string>
+    <string name="vue_template_description">An approachable, performant and versatile framework for building web user interfaces</string>
+    <string name="svelte_template">Svelte Template</string>
+    <string name="svelte_template_description">A UI framework that uses a compiler to let you write breathtakingly concise components that do minimal work in the browser</string>
+    <string name="solid_template">Solid Template</string>
+    <string name="solid_template_description">Simple and performant reactivity for building user interfaces</string>
+    <string name="angular_template">Angular Template</string>
+    <string name="angular_template_description">The framework for building scalable web apps with confidence</string>
 </resources>

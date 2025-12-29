@@ -2,4 +2,20 @@
 <resources>
     <string name="module_title">NodeJS 模块</string>
     <string name="module_subtitle">一个免费、开源、跨平台的 JavaScript 运行时环境，它让开发人员能够创建服务器、 Web 应用、命令行工具和脚本。</string>
+    <string name="project_name">项目名称</string>
+    <string name="project_version">项目版本</string>
+    <string name="project_description">项目描述</string>
+    <string name="project_template">项目模板</string>
+    <string name="normal_template">默认模板</string>
+    <string name="normal_template_description">仅包含 package.json 和 main.js</string>
+    <string name="react_template">React 模板</string>
+    <string name="react_template_description">用于构建 Web 和原生交互界面的库</string>
+    <string name="vue_template">Vue 模板</string>
+    <string name="vue_template_description">易学易用，性能出色，适用场景丰富的 Web 前端框架</string>
+    <string name="svelte_template">Svelte 模板</string>
+    <string name="svelte_template_description">一个使用编译器的 UI 框架，让你能够编写极其简洁、在浏览器中执行最少工作的组件</string>
+    <string name="solid_template">Solid 模板</string>
+    <string name="solid_template_description">一个用于构建用户界面，简单高效、性能卓越的JavaScript库</string>
+    <string name="angular_template">Angular 模板</string>
+    <string name="angular_template_description">构建可扩展 Web 应用的框架，助您自信满满</string>
 </resources>

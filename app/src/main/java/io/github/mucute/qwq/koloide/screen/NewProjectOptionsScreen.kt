@@ -2,6 +2,7 @@ package io.github.mucute.qwq.koloide.screen
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -85,7 +86,11 @@ fun NewProjectOptionsScreen(module: String) {
         },
     ) {
         CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
-            Column(Modifier.padding(it)) {
+            Column(
+                Modifier
+                    .padding(it)
+                    .fillMaxSize()
+            ) {
                 usableModule?.NewProjectOptionsContent()
             }
         }
