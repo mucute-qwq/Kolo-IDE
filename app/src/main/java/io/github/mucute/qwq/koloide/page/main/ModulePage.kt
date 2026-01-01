@@ -1,7 +1,6 @@
 package io.github.mucute.qwq.koloide.page.main
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.twotone.Delete
 import androidx.compose.material.icons.twotone.ImportExport
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
@@ -36,7 +36,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.mucute.qwq.koloide.R
 import io.github.mucute.qwq.koloide.component.FileSelectorDialog
 import io.github.mucute.qwq.koloide.component.LoadingContent
@@ -48,19 +47,23 @@ import io.github.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem
 import io.github.mucute.qwq.koloide.module.Module
 import io.github.mucute.qwq.koloide.module.util.ExtractState
 import io.github.mucute.qwq.koloide.module.util.extractBinariesFlow
-import io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+
+private val moduleCardDropDownMenuItems = listOf(
+    SelectableCardDropDownMenuItem(
+        leadingIcon = Icons.TwoTone.Delete,
+        textResId = R.string.uninstall
+    )
+)
 
 @Composable
 fun ModulePage() {
     val moduleState by ModuleManager.state.collectAsStateWithLifecycle()
     val usableModules by ModuleManager.usableModules.collectAsStateWithLifecycle()
 
-    val viewModel: MainScreenViewModel = viewModel()
-    val moduleCardDropDownMenuItems = viewModel.moduleCardDropDownMenuItems
     LoadingContent(
         isLoading = moduleState === ModuleManager.State.Processing
     ) {

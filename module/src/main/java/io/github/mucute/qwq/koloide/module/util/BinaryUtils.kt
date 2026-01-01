@@ -20,17 +20,6 @@ import java.io.InputStream
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-sealed class ExtractState {
-
-    data class Processing(
-        val name: String,
-        val progress: Float
-    ) : ExtractState()
-
-    object Idle : ExtractState()
-
-}
-
 suspend fun extractBinaries(
     context: Context,
     inputStream: InputStream

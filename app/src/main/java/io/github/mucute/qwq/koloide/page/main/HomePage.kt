@@ -11,6 +11,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Code
 import androidx.compose.material.icons.twotone.Add
+import androidx.compose.material.icons.twotone.Delete
+import androidx.compose.material.icons.twotone.Edit
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -23,20 +25,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import io.github.mucute.qwq.koloide.R
 import io.github.mucute.qwq.koloide.activity.LspTestActivity
 import io.github.mucute.qwq.koloide.component.SelectableCard
 import io.github.mucute.qwq.koloide.component.SelectableCardDropDownMenu
 import io.github.mucute.qwq.koloide.composition.provider.LocalNavController
+import io.github.mucute.qwq.koloide.model.SelectableCardDropDownMenuItem
 import io.github.mucute.qwq.koloide.navigation.NavScreen
-import io.github.mucute.qwq.koloide.viewmodel.MainScreenViewModel
+
+private val projectCardDropDownMenuItems = listOf(
+    SelectableCardDropDownMenuItem(
+        leadingIcon = Icons.TwoTone.Edit,
+        textResId = R.string.rename
+    ),
+    SelectableCardDropDownMenuItem(
+        leadingIcon = Icons.TwoTone.Delete,
+        textResId = R.string.delete
+    ),
+)
 
 @Composable
 fun HomePage() {
     val context = LocalContext.current
     val navController = LocalNavController.current
-    val viewModel: MainScreenViewModel = viewModel()
-    val projectCardDropDownMenuItems = viewModel.projectCardDropDownMenuItems
+
     Box(Modifier.fillMaxSize()) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp)

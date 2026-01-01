@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,6 +31,7 @@ import io.github.mucute.qwq.koloide.composition.provider.LocalSnackbarHostState
 import io.github.mucute.qwq.koloide.manager.ModuleManager
 import io.github.mucute.qwq.koloide.navigation.NavScreen
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 @Suppress("UNCHECKED_CAST")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,7 +41,6 @@ fun NewProjectOptionsScreen(module: String) {
         .map { it.find { usableModule -> usableModule.module == module } }
         .collectAsStateWithLifecycle(null)
 
-    val snackbarHostState = remember { SnackbarHostState() }
     val navController = LocalNavController.current
 
     Scaffold(
@@ -59,39 +60,18 @@ fun NewProjectOptionsScreen(module: String) {
                 }
             )
         },
-        snackbarHost = {
-            SnackbarHost(
-                hostState = snackbarHostState,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .animateContentSize()
-            )
-        },
-        floatingActionButton = {
-            CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
-                FloatingActionButton(
-                    onClick = {
-                        if (usableModule?.newProjectOptionsDone() == true) {
-                            navController.popBackStack<NavScreen.Main>(
-                                inclusive = false,
-                                saveState = false
-                            )
-                            navController.navigate(NavScreen.Workspace)
-                        }
-                    }
-                ) {
-                    Icon(Icons.TwoTone.Check, contentDescription = null)
-                }
-            }
-        },
     ) {
-        CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
-            Column(
-                Modifier
-                    .padding(it)
-                    .fillMaxSize()
-            ) {
-                usableModule?.NewProjectOptionsContent()
+        Column(
+            Modifier
+                .padding(it)
+                .fillMaxSize()
+        ) {
+            usableModule?.NewProjectOptionsContent {
+                navController.popBackStack<NavScreen.Main>(
+                    inclusive = false,
+                    saveState = false
+                )
+                navController.navigate(NavScreen.Workspace)
             }
         }
     }

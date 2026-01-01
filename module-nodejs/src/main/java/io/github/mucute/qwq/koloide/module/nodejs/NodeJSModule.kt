@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DropdownMenuItem
@@ -23,7 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
@@ -37,19 +36,11 @@ import io.github.mucute.qwq.koloide.module.Module
 import io.github.mucute.qwq.koloide.module.nodejs.template.ProjectTemplates
 
 class NodeJSModule(application: Application) : Module(
+    application = application,
     titleResId = R.string.module_title,
     subtitleResId = R.string.module_subtitle
 ) {
     override val module = "nodejs"
-
-
-    private var projectName by mutableStateOf("")
-
-    private var projectVersion by mutableStateOf("1.0.0")
-
-    private var projectDescription by mutableStateOf("")
-
-    private var projectTemplate by mutableStateOf(ProjectTemplates.first())
 
     @Composable
     override fun newProjectIcon(): Painter {
@@ -58,8 +49,12 @@ class NodeJSModule(application: Application) : Module(
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    override fun NewProjectOptionsContent() {
-        var isExposedDropdownMenuExpanded by remember { mutableStateOf(false) }
+    override fun NewProjectOptionsContent(done: () -> Unit) {
+        var projectName by retain { mutableStateOf("") }
+        var projectVersion by retain { mutableStateOf("1.0.0") }
+        var projectDescription by retain { mutableStateOf("") }
+        var projectTemplate by retain { mutableStateOf(ProjectTemplates.first()) }
+        var isExposedDropdownMenuExpanded by retain { mutableStateOf(false) }
 
         DisposableEffect(Unit) {
             onDispose {
@@ -161,25 +156,24 @@ class NodeJSModule(application: Application) : Module(
                         isExposedDropdownMenuExpanded = false
                     }
                 ) {
-                    ProjectTemplates.forEach { projectTemplate ->
+                    ProjectTemplates.forEach { template ->
                         DropdownMenuItem(
                             text = {
                                 Column {
                                     Text(
-                                        stringResource(projectTemplate.nameResId),
+                                        stringResource(template.nameResId),
                                         style = MaterialTheme.typography.bodyLarge,
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis
                                     )
                                     Text(
-                                        stringResource(projectTemplate.descriptionResId),
-                                        style = MaterialTheme.typography.bodySmall,
-//                                        maxLines = 1,
-//                                        overflow = TextOverflow.Ellipsis
+                                        stringResource(template.descriptionResId),
+                                        style = MaterialTheme.typography.bodySmall
                                     )
                                 }
                             },
                             onClick = {
+                                projectTemplate = template
                                 isExposedDropdownMenuExpanded = false
                             },
                             contentPadding = PaddingValues(horizontal = 16.dp, 8.dp),
@@ -188,10 +182,6 @@ class NodeJSModule(application: Application) : Module(
                 }
             }
         }
-    }
-
-    override fun newProjectOptionsDone(): Boolean {
-        return super.newProjectOptionsDone()
     }
 
 }

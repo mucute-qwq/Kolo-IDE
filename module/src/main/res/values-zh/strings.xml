@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="invalid_project_name">无效的项目名称</string>
+    <string name="project_name_cannot_be_null">项目名称不能为空</string>
+    <string name="project_version_cannot_be_empty">项目版本不能为空</string>
+</resources>

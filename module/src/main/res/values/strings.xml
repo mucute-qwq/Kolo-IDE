@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="invalid_project_name">Invalid project name</string>
+    <string name="project_name_cannot_be_null">Project name cannot be empty</string>
+    <string name="project_version_cannot_be_empty">Project version cannot be empty</string>
+</resources>
