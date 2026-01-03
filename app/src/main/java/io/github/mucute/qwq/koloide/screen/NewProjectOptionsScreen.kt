@@ -27,10 +27,12 @@ import io.github.mucute.qwq.koloide.navigation.NavScreen
 @Suppress("UNCHECKED_CAST")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewProjectOptionsScreen(module: String) {
+fun NewProjectOptionsScreen(moduleType: String) {
     val usableModules by ModuleManager.usableModules.collectAsStateWithLifecycle()
     val usableModule: Module? by produceState(null, usableModules) {
-        value = usableModules.find { it.type == module }
+        ModuleManager.usableModules.collect {
+            value = it.find { module -> module.type == moduleType }
+        }
     }
     val navController = LocalNavController.current
 
