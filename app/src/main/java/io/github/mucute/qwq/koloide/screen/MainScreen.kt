@@ -69,7 +69,7 @@ private val navItems = listOf(
 @Composable
 fun MainScreen() {
     var selectedNavItem by retain { mutableStateOf(navItems.first()) }
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = retain { SnackbarHostState() }
 
     Scaffold(
         topBar = {

@@ -14,9 +14,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.twotone.InsertDriveFile
 import androidx.compose.material.icons.twotone.ArrowUpward
 import androidx.compose.material.icons.twotone.Folder
-import androidx.compose.material.icons.twotone.InsertDriveFile
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,7 +51,7 @@ fun FileSelectorDialog(
     navigateIn: (currentFolder: File, targetFolder: File) -> File = { _, targetFolder -> targetFolder },
     selectFile: (file: File) -> Unit = {}
 ) {
-    var currentFolder by remember { mutableStateOf(folder) }
+    var currentFolder by retain { mutableStateOf(folder) }
     AlertDialog(
         onDismissRequest = onDismissRequest,
         title = {
@@ -143,7 +144,7 @@ private fun FileSelectorDialogContent(
             ) {
                 Spacer(Modifier.width(24.dp))
                 Icon(
-                    if (child.isFile) Icons.TwoTone.InsertDriveFile else Icons.TwoTone.Folder,
+                    if (child.isFile) Icons.AutoMirrored.TwoTone.InsertDriveFile else Icons.TwoTone.Folder,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier

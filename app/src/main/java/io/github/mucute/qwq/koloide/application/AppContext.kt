@@ -5,6 +5,7 @@ import android.app.Application
 import android.os.Bundle
 import io.github.dingyi222666.monarch.languages.JavascriptLanguage
 import io.github.mucute.qwq.koloide.manager.ModuleManager
+import io.github.mucute.qwq.koloide.manager.ProjectManager
 import io.github.mucute.qwq.koloide.module.util.extractBinaries
 import io.github.mucute.qwq.koloide.module.util.extractBinariesFlow
 import io.github.rosemoe.sora.langs.monarch.registry.FileProviderRegistry

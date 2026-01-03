@@ -34,7 +34,7 @@ fun Navigation() {
                 }
 
                 composable<NavScreen.NewProjectOptions> {
-                    NewProjectOptionsScreen(it.toRoute<NavScreen.NewProjectOptions>().module)
+                    NewProjectOptionsScreen(it.toRoute<NavScreen.NewProjectOptions>().moduleType)
                 }
 
                 composable<NavScreen.Workspace> {
@@ -60,7 +60,7 @@ sealed interface NavScreen {
     object NewProject : NavScreen
 
     @Serializable
-    data class NewProjectOptions(val module: String) : NavScreen
+    data class NewProjectOptions(val moduleType: String) : NavScreen
 
     @Serializable
     object Workspace : NavScreen

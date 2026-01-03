@@ -1,7 +1,9 @@
 package io.github.mucute.qwq.koloide.module.nodejs.template
 
+import androidx.compose.runtime.Immutable
 import io.github.mucute.qwq.koloide.module.nodejs.R
 
+@Immutable
 internal data class ProjectTemplate(
     val nameResId: Int,
     val descriptionResId: Int,
@@ -13,37 +15,37 @@ internal data class ProjectTemplate(
         val NormalTemplate = ProjectTemplate(
             nameResId = R.string.normal_template,
             descriptionResId = R.string.normal_template_description,
-            path = "template/normal-template.zip"
+            path = "template/nodejs/normal-template.zip"
         )
 
         val VueTemplate = ProjectTemplate(
             nameResId = R.string.vue_template,
             descriptionResId = R.string.vue_template_description,
-            path = "template/vue-template.zip"
+            path = "template/nodejs/vue-template.zip"
         )
 
         val ReactTemplate = ProjectTemplate(
             nameResId = R.string.react_template,
             descriptionResId = R.string.react_template_description,
-            path = "template/react-template.zip"
+            path = "template/nodejs/react-template.zip"
         )
 
         val SvelteTemplate = ProjectTemplate(
             nameResId = R.string.svelte_template,
             descriptionResId = R.string.svelte_template_description,
-            path = "template/svelte-template.zip"
+            path = "template/nodejs/svelte-template.zip"
         )
 
         val SolidTemplate = ProjectTemplate(
             nameResId = R.string.solid_template,
             descriptionResId = R.string.solid_template_description,
-            path = "template/solid-template.zip"
+            path = "template/nodejs/solid-template.zip"
         )
 
         val AngularTemplate = ProjectTemplate(
             nameResId = R.string.angular_template,
             descriptionResId = R.string.angular_template_description,
-            path = "template/angular-template.zip"
+            path = "template/nodejs/angular-template.zip"
         )
 
     }

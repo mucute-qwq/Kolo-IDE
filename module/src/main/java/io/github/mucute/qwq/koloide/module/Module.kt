@@ -15,7 +15,7 @@ abstract class Module(
     val subtitleResId: Int,
 ) {
 
-    abstract val module: String
+    abstract val type: String
 
     @Composable
     open fun newProjectIcon(): Painter {

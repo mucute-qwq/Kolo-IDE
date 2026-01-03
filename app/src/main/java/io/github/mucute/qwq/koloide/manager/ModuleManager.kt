@@ -1,15 +1,18 @@
 package io.github.mucute.qwq.koloide.manager
 
-import android.util.Log
 import io.github.mucute.qwq.koloide.application.AppContext
 import io.github.mucute.qwq.koloide.module.Module
 import io.github.mucute.qwq.koloide.module.nodejs.NodeJSModule
+import io.github.mucute.qwq.koloide.module.util.ExtractState
+import io.github.mucute.qwq.koloide.module.util.extractBinariesFlow
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -39,17 +42,55 @@ object ModuleManager {
 
     val usableModules = _usableModules.asStateFlow()
 
+    fun install(
+        file: File,
+        onCollected: FlowCollector<ExtractState>
+    ) {
+        AppContext.appScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
+            throwable.printStackTrace()
+        }) {
+            _state.update { State.Processing }
+            installSuspend(file, onCollected)
+        }.invokeOnCompletion {
+            _state.update { State.Idle }
+            ProjectManager.refresh()
+        }
+    }
+
+    private suspend fun installSuspend(
+        file: File,
+        onCollected: FlowCollector<ExtractState>
+    ) {
+        withContext(Dispatchers.IO) {
+            extractBinariesFlow(
+                AppContext.instance,
+                file.inputStream()
+            ).collect(onCollected)
+
+            refreshSuspend()
+        }
+    }
+
     fun uninstall(module: Module) {
         AppContext.appScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
             throwable.printStackTrace()
         }) {
             _state.update { State.Processing }
-            _usableModules.update {
+            uninstallSuspend(module)
+        }.invokeOnCompletion {
+            _state.update { State.Idle }
+            ProjectManager.refresh()
+        }
+    }
+
+    private suspend fun uninstallSuspend(module: Module) {
+        withContext(Dispatchers.IO) {
+            _usableModules.update { usableModules ->
                 val moduleFolder = File(AppContext.instance.filesDir, "module")
                 val controlFolder = File(AppContext.instance.filesDir, "control")
                 val usrFolder = File(AppContext.instance.filesDir, "usr")
                 val excludedFiles = (controlFolder.listFiles() ?: emptyArray())
-                    .filter { it.name != "${module.module}.mappings" }
+                    .filter { it.name != "${module.type}.mappings" }
                     .flatMap { it.readLines() }
                     .filter { it.isNotEmpty() }
                     .toHashSet()
@@ -57,8 +98,8 @@ object ModuleManager {
                 File(AppContext.instance.filesDir, "test.mappings")
                     .writeText(excludedFiles.joinToString(separator = "\n"))
 
-                File(moduleFolder, "${module.module}-module-info.json").delete()
-                File(controlFolder, "${module.module}.mappings").apply {
+                File(moduleFolder, "${module.type}-module-info.json").delete()
+                File(controlFolder, "${module.type}.mappings").apply {
                     forEachLine {
                         if (it.isEmpty()) {
                             return@forEachLine
@@ -79,13 +120,11 @@ object ModuleManager {
                     delete()
                 }
 
-                it
+                usableModules
                     .toMutableList()
                     .apply { remove(module) }
                     .toList()
             }
-        }.invokeOnCompletion {
-            _state.update { State.Idle }
         }
     }
 
@@ -94,20 +133,27 @@ object ModuleManager {
             throwable.printStackTrace()
         }) {
             _state.update { State.Processing }
+            refreshSuspend()
+        }.invokeOnCompletion {
+            _state.update { State.Idle }
+            ProjectManager.refresh()
+        }
+    }
+
+    private suspend fun refreshSuspend() {
+        withContext(Dispatchers.IO) {
             _usableModules.update {
                 buildList {
                     val moduleFolder = File(AppContext.instance.filesDir, "module")
                     val children = moduleFolder.listFiles() ?: emptyArray()
                     for (child in children) {
                         val jsonObject = Json.parseToJsonElement(child.readText()).jsonObject
-                        val module = jsonObject["module"]!!.jsonPrimitive.content
-                        val targetModule = modules.value.find { it.module == module } ?: continue
-                        add(targetModule)
+                        val type = jsonObject["type"]!!.jsonPrimitive.content
+                        val module = modules.value.find { it.type == type } ?: continue
+                        add(module)
                     }
                 }
             }
-        }.invokeOnCompletion {
-            _state.update { State.Idle }
         }
     }
 

@@ -1,7 +1,9 @@
 package io.github.mucute.qwq.koloide.module.util
 
 import android.content.Context
+import io.github.mucute.qwq.koloide.module.Module
 import io.github.mucute.qwq.koloide.module.R
+import java.io.File
 
 fun validateProjectOptions(
     context: Context,
@@ -18,6 +20,10 @@ fun validateProjectOptions(
 
     if ("/" in projectName) {
         return context.getString(R.string.invalid_project_name)
+    }
+
+    if (File(context.filesDir, "home").resolve(projectName).exists()) {
+        return context.getString(R.string.project_already_exists)
     }
 
     return null

@@ -32,7 +32,7 @@
     <string name="cancel">Cancel</string>
     <string name="file_selector">File Selector</string>
     <string name="only_tar_files_can_be_imported">Only .tar files can be imported.</string>
-    <string name="extracting">Extracting: %s</string>
     <string name="no_module_installed">No module installed</string>
     <string name="project_options">Project Options</string>
+    <string name="no_project_created">No project created</string>
 </resources>

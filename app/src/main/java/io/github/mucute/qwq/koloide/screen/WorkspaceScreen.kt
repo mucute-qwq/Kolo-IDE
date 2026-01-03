@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.retain.retain
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.mucute.qwq.koloide.composition.provider.LocalNavController
@@ -31,7 +32,7 @@ import io.github.mucute.qwq.koloide.navigation.NavScreen
 @Composable
 fun WorkspaceScreen() {
     val usableModules by ModuleManager.usableModules.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = retain { SnackbarHostState() }
     val navController = LocalNavController.current
 
     Scaffold(

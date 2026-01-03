@@ -58,7 +58,11 @@ fun NewProjectScreen() {
             LoadingContent(
                 isLoading = moduleState === ModuleManager.State.Processing
             ) {
-                NewProjectItems(usableModules)
+                if (usableModules.isEmpty()) {
+                    Text(stringResource(R.string.no_module_installed))
+                } else {
+                    NewProjectItems(usableModules)
+                }
             }
         }
     }
@@ -82,7 +86,7 @@ private fun NewProjectItems(
             GalleryCard(
                 painter = usableModule.newProjectIcon(),
                 onClick = {
-                    navController.navigate(NavScreen.NewProjectOptions(usableModule.module))
+                    navController.navigate(NavScreen.NewProjectOptions(usableModule.type))
                 }
             )
         }

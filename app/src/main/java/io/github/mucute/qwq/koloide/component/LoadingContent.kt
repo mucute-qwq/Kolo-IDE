@@ -2,6 +2,7 @@ package io.github.mucute.qwq.koloide.component
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -11,7 +12,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun LoadingContent(
     isLoading: Boolean,
-    content: @Composable () -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
     AnimatedContent(
         targetState = isLoading,

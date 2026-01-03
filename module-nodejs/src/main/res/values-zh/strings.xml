@@ -18,4 +18,5 @@
     <string name="solid_template_description">一个用于构建用户界面，简单高效、性能卓越的JavaScript库</string>
     <string name="angular_template">Angular 模板</string>
     <string name="angular_template_description">构建可扩展 Web 应用的框架，助您自信满满</string>
+    <string name="project_creation_failed">创建项目失败：%s</string>
 </resources>

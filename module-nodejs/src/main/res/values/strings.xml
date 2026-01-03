@@ -18,4 +18,5 @@
     <string name="solid_template_description">Simple and performant reactivity for building user interfaces</string>
     <string name="angular_template">Angular Template</string>
     <string name="angular_template_description">The framework for building scalable web apps with confidence</string>
+    <string name="project_creation_failed">Project creation failed: %s</string>
 </resources>

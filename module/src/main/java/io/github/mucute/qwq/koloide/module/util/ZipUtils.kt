@@ -1,30 +1,28 @@
 package io.github.mucute.qwq.koloide.module.util
 
-import android.content.Context
 import io.github.mucute.qwq.koloide.shared.util.transferToCompat
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onCompletion
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream
 import java.io.File
 import java.io.InputStream
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 suspend fun extractFiles(
-    context: Context,
     inputStream: InputStream,
     baseFolder: File
 ) {
-    extractFilesFlow(context, inputStream, baseFolder).collect()
+    extractFilesFlow(inputStream, baseFolder).collect()
 }
 
 @OptIn(ExperimentalUuidApi::class)
 fun extractFilesFlow(
-    context: Context,
     inputStream: InputStream,
     baseFolder: File
 ): Flow<ExtractState> {
@@ -37,8 +35,8 @@ fun extractFilesFlow(
 
         var fileCount = 0L
 
-        TarArchiveInputStream(GzipCompressorInputStream(tempFile.inputStream())).use { tarArchiveInputStream ->
-            while (tarArchiveInputStream.nextEntry != null) {
+        ZipArchiveInputStream(tempFile.inputStream()).use { zipArchiveInputStream ->
+            while (zipArchiveInputStream.nextEntry != null) {
                 fileCount++
             }
         }
@@ -78,5 +76,8 @@ fun extractFilesFlow(
             }
         }
 
-    }
+    }.onCompletion {
+        tempFile.delete()
+        emit(ExtractState.Idle)
+    }.flowOn(Dispatchers.IO)
 }

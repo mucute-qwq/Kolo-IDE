@@ -3,4 +3,6 @@
     <string name="invalid_project_name">Invalid project name</string>
     <string name="project_name_cannot_be_null">Project name cannot be empty</string>
     <string name="project_version_cannot_be_empty">Project version cannot be empty</string>
+    <string name="extracting">Extracting: %s</string>
+    <string name="project_already_exists">The project already exists</string>
 </resources>

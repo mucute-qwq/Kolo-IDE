@@ -15,14 +15,14 @@ fun SelectableCardDropDownMenu(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
     selectableCardDropDownMenuItems: List<SelectableCardDropDownMenuItem> = emptyList(),
-    onClick: (SelectableCardDropDownMenuItem) -> Unit = {}
+    onClick: (index: Int, selectableCardDropDownMenuItem: SelectableCardDropDownMenuItem) -> Unit = { _, _ -> }
 ) {
     DropdownMenu(
         modifier = modifier,
         expanded = expanded,
         onDismissRequest = onDismissRequest
     ) {
-        selectableCardDropDownMenuItems.forEach { selectableCardDropDownMenuItem ->
+        selectableCardDropDownMenuItems.forEachIndexed { index, selectableCardDropDownMenuItem ->
             DropdownMenuItem(
                 leadingIcon = {
                     Icon(selectableCardDropDownMenuItem.leadingIcon, contentDescription = null)
@@ -30,7 +30,9 @@ fun SelectableCardDropDownMenu(
                 text = {
                     Text(stringResource(selectableCardDropDownMenuItem.textResId))
                 },
-                onClick = { onClick(selectableCardDropDownMenuItem) }
+                onClick = {
+                    onClick(index, selectableCardDropDownMenuItem)
+                }
             )
         }
     }

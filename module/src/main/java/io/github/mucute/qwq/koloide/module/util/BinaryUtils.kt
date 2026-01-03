@@ -62,7 +62,7 @@ fun extractBinariesFlow(
                         File(moduleFolder, tarArchiveEntry.name)
                             .normalize()
                             .readText()
-                    ).jsonObject["module"]!!.jsonPrimitive.content
+                    ).jsonObject["type"]!!.jsonPrimitive.content
                     continue
                 }
 
