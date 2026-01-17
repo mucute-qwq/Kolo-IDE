@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -31,11 +30,6 @@ dependencies {
     api(libs.androidx.navigation.compose)
     api(libs.androidx.material.icons.extended)
     api(libs.kotlinx.serialization.json)
-    testApi(libs.junit)
-    androidTestApi(libs.androidx.junit)
-    androidTestApi(libs.androidx.espresso.core)
-    androidTestApi(platform(libs.androidx.compose.bom))
-    androidTestApi(libs.androidx.ui.test.junit4)
     debugApi(libs.androidx.ui.tooling)
     debugApi(libs.androidx.ui.test.manifest)
 }
