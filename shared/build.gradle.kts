@@ -30,6 +30,11 @@ dependencies {
     api(libs.androidx.navigation.compose)
     api(libs.androidx.material.icons.extended)
     api(libs.kotlinx.serialization.json)
-    debugApi(libs.androidx.ui.tooling)
-    debugApi(libs.androidx.ui.test.manifest)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }
