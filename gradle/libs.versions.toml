@@ -17,7 +17,7 @@ materialIconsExtended = "1.7.8"
 composePreference = "2.1.1"
 monarch-code = "1.0.3"
 monarch-language-pack = "1.0.2"
-lsp4j = "0.24.0"
+lsp4j = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
